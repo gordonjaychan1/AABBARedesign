@@ -122,17 +122,6 @@ SLIDESHOW = [
 ]
 DAYS = [("Mon", "Monday"), ("Tue", "Tuesday"), ("Wed", "Wednesday"), ("Thu", "Thursday"), ("Fri", "Friday")]
 
-CLASS_PHOTOS = [
-    ("4f0023_faed16fd04b049038638d8ab0aa770c6~mv2.jpg", "Students training in the dojo"),
-    ("4f0023_1fbca9b442764e30828e1c1630265101~mv2.jpg", "Class in session"),
-    ("4f0023_6b0d422afcf1462cac92c5e5ce1ea5cb~mv2.jpg", "Students practicing kata"),
-    ("4f0023_2f0d375192dd4fae93770bd32607adc7~mv2.jpg", "Group training"),
-    ("4f0023_ebda3d8b7f7f42be9029b20939732cf2~mv2.jpg", "Kumite practice"),
-    ("4f0023_ff513c1a7a9c4a1798e85ecdbadb8a67~mv2.jpg", "Students at the academy"),
-    ("4f0023_808280f8d2f14b598703bf8bcbbb1ab9~mv2.jpeg", "Karate class"),
-    ("4f0023_94e399641ccc4382be8ef01aa5e93e7f~mv2.jpg", "Dojo training"),
-]
-
 # Posts copied from the old News & Updates page: date, category, title, text paragraphs
 NEWS = json.loads((ROOT / "data" / "news.json").read_text(encoding="utf-8"))
 CHIP_LABEL = {"tournament": "Tournaments", "promotion": "Promotions", "training": "Training", "event": "Events"}
@@ -147,11 +136,6 @@ CALENDAR = [
     ("February 2027", "4f0023_90a41f5587154c13b30d157c3951ef9f~mv2.png"),
 ]
 
-KATA = ["Kihon Kata Ichi", "Kihon Kata Ni", "Kihon Kata San", "Kihon Kata Yon", "Kihon Kata Go",
-        "Heian Shodan", "Heian Nidan", "Heian Sandan", "Heian Yodan", "Heian Godan", "Ten No Kata",
-        "Chino Kata", "Jiin", "Jion", "Jitte", "Matsukaze", "Bassai Dai", "Rohai", "Kosokun Dai",
-        "Seienchin", "Jyuroku", "Shinsei"]
-
 ICONS = {
     "pin": '<svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
     "phone": '<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
@@ -161,7 +145,7 @@ ICONS = {
 # (output file, link href, menu label). Links omit .html; GitHub Pages serves classes.html at /classes.
 PAGES = [("index.html", "./", "Welcome"), ("instructors.html", "instructors", "Instructors"),
          ("classes.html", "classes", "Classes"), ("news.html", "news", "News & Updates"),
-         ("media.html", "media", "Media"), ("calendar.html", "calendar", "Calendar")]
+         ("calendar.html", "calendar", "Calendar")]
 
 e = html.escape
 
@@ -297,20 +281,16 @@ def build_classes():
     n = len(SLIDESHOW)
     slides = "".join(
         f'<div class="slide" role="group" aria-roledescription="slide" aria-label="Photo {i + 1} of {n}">'
-        f'<img src="{wix(m, 1400, 560, "slide.jpg")}" alt="" loading="{"eager" if i == 0 else "lazy"}" width="1400" height="560"></div>'
-        for i, m in enumerate(SLIDESHOW))
-    thumbs = "".join(
-        f'<button aria-label="Show photo {i + 1}" aria-current="false"><img src="{wix(m, 200, 80, "t.jpg")}" alt="" loading="lazy" width="100" height="40"></button>'
+        f'<img src="{wix(m, 1800, 720, "slide.jpg")}" alt="" loading="{"eager" if i == 0 else "lazy"}" width="1800" height="720"></div>'
         for i, m in enumerate(SLIDESHOW))
     body = title_block("Classes and Courses", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars and private lessons.") + f"""
-<section class="section"><div class="wrap">
-  <div class="carousel" data-carousel tabindex="0" aria-roledescription="carousel" aria-label="Class photos">
+<section class="section">
+  <div class="carousel wide" data-carousel tabindex="0" aria-roledescription="carousel" aria-label="Class photos">
     <div class="track">{slides}</div>
     <button class="car-btn prev" aria-label="Previous photo">&#8249;</button>
     <button class="car-btn next" aria-label="Next photo">&#8250;</button>
-    <div class="thumbs">{thumbs}</div>
   </div>
-</div></section>
+</section>
 <section class="section"><div class="wrap"><div class="daygrid">{"".join(cards)}</div>
   <p class="note">Check the <a href="calendar">monthly calendar</a> for holidays and special events.</p></div></section>""" + free_class()
     return page("classes.html", "Classes", body, "Class schedule by belt level: kids, advanced, kumite, weapons and competition team.")
@@ -344,20 +324,6 @@ def build_news():
     return page("news.html", "News & Updates", body, "Tournament results, black belt promotions and training events from AABBA.")
 
 
-def build_media():
-    photos = "".join(
-        f'<button data-full="{wix(m, 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(a)}"><img src="{wix(m, 480, name="thumb.jpg")}" alt="{e(a)}" loading="lazy"></button>'
-        for m, a in CLASS_PHOTOS)
-    kata = "".join(f"<li>{k}</li>" for k in KATA)
-    body = title_block("Media", "Photos from the dojo and the kata we practice.") + f"""
-<section class="section"><div class="wrap narrow"><h2>Photos</h2><div class="masonry">{photos}</div></div></section>
-<section class="section"><div class="wrap narrow"><h2>Kata</h2>
-  <p class="note">Video links can be added next to each kata once the academy shares them.</p>
-  <ul class="kata-list">{kata}</ul></div></section>
-<div class="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photo"><button class="x" aria-label="Close">&times;</button><img alt=""></div>""" + free_class()
-    return page("media.html", "Media", body, "Photos and kata from All American Black Belt Academy.")
-
-
 def build_calendar():
     jump = "".join(f'<a class="chip" href="#m{i}">{n}</a>' for i, (n, m) in enumerate(CALENDAR))
     tabs = "".join(
@@ -371,6 +337,6 @@ def build_calendar():
 if __name__ == "__main__":
     for fn, builder in [("index.html", build_index), ("instructors.html", build_instructors),
                         ("classes.html", build_classes), ("news.html", build_news),
-                        ("media.html", build_media), ("calendar.html", build_calendar)]:
+                        ("calendar.html", build_calendar)]:
         (ROOT / fn).write_text(builder(), encoding="utf-8")
         print("wrote", fn)

@@ -13,7 +13,6 @@
   document.querySelectorAll('[data-carousel]').forEach(function (root) {
     var track = root.querySelector('.track');
     var slides = root.querySelectorAll('.slide');
-    var thumbs = root.querySelectorAll('.thumbs button');
     var count = root.querySelector('.car-count');
     var idx = 0;
 
@@ -23,13 +22,10 @@
     }
     function mark(i) {
       idx = i;
-      thumbs.forEach(function (t, n) { t.setAttribute('aria-current', n === i ? 'true' : 'false'); });
-      if (thumbs[i]) thumbs[i].scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
       if (count) count.textContent = (i + 1) + ' / ' + slides.length;
     }
     root.querySelector('.prev').addEventListener('click', function () { go(idx - 1); });
     root.querySelector('.next').addEventListener('click', function () { go(idx + 1); });
-    thumbs.forEach(function (t, n) { t.addEventListener('click', function () { go(n); }); });
     root.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') { e.preventDefault(); go(idx - 1); }
       if (e.key === 'ArrowRight') { e.preventDefault(); go(idx + 1); }
