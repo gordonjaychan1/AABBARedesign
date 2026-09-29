@@ -26,7 +26,23 @@ def wix(media_id, w, h=None, name="photo.jpg"):
     return f"https://static.wixstatic.com/media/{media_id}/v1/{mode}/{size},al_c,q_75/{name}"
 
 
-HERO = "5df506_b8bfdcba534349ae95456bb6e8f8b18e~mv2_d_4898_1859_s_2.jpeg"
+HERO = "82efacf67509447eb89b898a3ff6e3cd.jpg"  # belts photo used behind the intro text on the old site
+LOGO_FLAG = "5df506_41dbd700c0724e0cbffbe98cc6886d88~mv2.jpg"
+LOGO_FIST = "5df506_f9aea610ff0846b0b7c227760e09cf70~mv2.jpg"
+DAY_PHOTOS = {
+    "Mon": "4f0023_9cb74c4ca46d4424bddfc6e50283a875~mv2.jpeg",
+    "Tue": "5df506_2f3d7d8dc1434443a4136c236e908e1a~mv2.jpg",
+    "Wed": "5df506_b32a4c3c86814845888485ac26ddc93b~mv2_d_2025_1679_s_2.jpg",
+    "Thu": "5df506_15eb2b3537f844a7972cf61d4deba43d~mv2_d_6557_2440_s_4_2.jpg",
+    "Fri": "5df506_5ecf972506da450492e46b24177c4fb9~mv2_d_4579_3265_s_4_2.jpeg",
+    "Sat": "5df506_b45cb5e8c4a145f18d7a30c63482a300~mv2_d_4898_3265_s_4_2.jpg",
+}
+SHIHAN = [
+    "In 1966 Shihan began his karate training in Philadelphia, PA with the JKA Shotokan master, Sensei T. Okazaki. While living in Lubbock, TX in 1971 he earned a brown belt in Allen Steen\u2019s Tae Kwon Do school. After moving to San Diego, CA Shihan joined Shihan Minobu Miki\u2019s dojo and began his long journey in Hayashi ha Shitoryu Kai by earning his black belt in 1975. He is currently the only Hayashi ha Shitoryu California dojo registered with the Japan Headquarters.",
+    "Shihan Hultin has a business administration degree and had a career in corporate management. In 1979 Shihan moved to the San Francisco Bay Area and in 1980 opened his karate school in Dublin. Subsequently he developed karate programs with the local YMCA and San Ramon City Recreation Department.",
+    "Shihan used his dojo and competition experience to become a World Karate Federation judge at the World Championship in Masstricht, Netherlands in 1984. He continued as an official in fifteen other international events all over the world. When the USA National Karate Federation was established in 1994, he was elected the first Western Regional Vice President and a member on the Referee Council.",
+    "Shihan Hultin established the United Karate Federation of California in 1990. The UKFC is a California non-profit corporation to benefit the Dublin elementary school children with low cost karate/martial art classes and give financial aid to karate athletes in Northern California. Shihan has developed a more holistic and healthy approach to his karate training to help his students maintain a healthy balance and superior physical fitness level. He is a National Strength and Conditioning Association Certified Personal Trainer.",
+]
 
 INSTRUCTORS = [
     ("Master Instructor", "Carl Hultin", "5df506_42faa1f6913e4f999ac68db641080ab6~mv2.jpg", [
@@ -173,21 +189,43 @@ PAGES = [("index.html", "Welcome"), ("instructors.html", "Instructors"), ("class
 e = html.escape
 
 
-def contact_list():
-    return f"""<ul class="contact-list">
-  <li><span class="ico">{ICONS['pin']}</span><span class="txt"><small>Address</small><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS)}</a></span></li>
-  <li><span class="ico">{ICONS['phone']}</span><span class="txt"><small>Phone</small><a href="tel:{PHONE_TEL}">{PHONE_DISPLAY}</a></span></li>
-  <li><span class="ico">{ICONS['mail']}</span><span class="txt"><small>Email</small><a href="mailto:{EMAIL}">{EMAIL}</a></span></li>
-</ul>"""
+def day_cards():
+    cards = []
+    for a, full in DAYS:
+        rows = []
+        for name, belts, sched in CLASSES:
+            for t in sched.get(a, []):
+                rows.append((t, name, belts))
+        rows.sort(key=lambda r: (int(r[0].split(":")[0]) % 12 + (12 if "PM" in r[0] else 0), r[0]))
+        lis = "".join(f"<li><b>{t}</b> {e(n)} <span>({e(b)})</span></li>" for t, n, b in rows)
+        cards.append(f'<article class="daycard"><h3>{full}</h3><ul>{lis}</ul>'
+                     f'<img src="{wix(DAY_PHOTOS[a], 480, 330, a + ".jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
+    cards.append(f'<article class="daycard"><h3>Saturday</h3><ul><li><b>10:00 AM &ndash; 2:00 PM</b> Reserved for Promotions / Seminars / Private Lessons</li></ul>'
+                 f'<img src="{wix(DAY_PHOTOS["Sat"], 480, 330, "Sat.jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
+    return '<div class="daygrid">' + "".join(cards) + "</div>"
+
+
+def contact_buttons():
+    return f"""<div class="contact-row">
+  <a class="cbtn gray" href="mailto:{EMAIL}">{ICONS['mail']}<span>{EMAIL}</span></a>
+  <a class="cbtn red" href="tel:{PHONE_TEL}">{ICONS['phone']}<span>925 829 4265</span></a>
+</div>"""
+
+
+def free_class():
+    return f"""<section class="free"><div class="wrap">
+  <hr class="gold">
+  <h2>Drop in for a free, introductory class</h2>
+  <p class="addr"><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS)}</a></p>
+  {contact_buttons()}
+</div></section>"""
 
 
 def page(fname, title, body, description, extra_body=""):
     cur = ' aria-current="page"'
-    nav = "".join(
-        f'<li><a href="{f}"{cur if f == fname else ""}>{e(t)}</a></li>' for f, t in PAGES)
-    social = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{n}</a></li>' for n, u in SOCIAL)
-    year = datetime.date.today().year
-    full_title = NAME + " | San Ramon Karate" if fname == "index.html" else f"{title} | AABBA"
+    nav = "".join(f'<li><a href="{f}"{cur if f == fname else ""}>{e(t)}</a></li>' for f, t in PAGES)
+    social = "".join(f'<a href="{u}" target="_blank" rel="noopener">{n}</a>' for n, u in SOCIAL)
+    full_title = "Dojo | " + NAME + " | San Ramon" if fname == "index.html" else f"{title} | {NAME}"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -198,14 +236,14 @@ def page(fname, title, body, description, extra_body=""):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Shippori+Mincho:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
-  <div class="wrap header-inner">
-    <a class="brand" href="index.html"><strong>{NAME}</strong><span>Excellence Through Efforts</span></a>
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="title">{NAME}</span><span class="motto">Excellence Through Efforts</span></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main"><ul>{nav}</ul></nav>
   </div>
@@ -214,19 +252,12 @@ def page(fname, title, body, description, extra_body=""):
 {body}
 </main>
 <footer class="site-footer">
-  <div class="wrap footer-grid">
-    <div>
-      <h4>{NAME}</h4>
-      <p>Traditional Shitoryu karate in San Ramon. Respect, self-discipline, humility and dedication to excellence.</p>
-      <p>Affiliated with Japan Karatedo Hayashi-ha Shitoryukai, <a href="http://www.usankf.org/" target="_blank" rel="noopener">USA NKF</a> and <a href="http://www.wkf.net" target="_blank" rel="noopener">WKF</a>.</p>
-    </div>
-    <div><h4>Visit</h4>
-      <p><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS)}</a></p>
-      <p><a href="tel:{PHONE_TEL}">{PHONE_DISPLAY}</a><br><a href="mailto:{EMAIL}">{EMAIL}</a></p>
-    </div>
-    <div><h4>Follow</h4><ul>{social}</ul></div>
+  <div class="wrap">
+    <p>Affiliated with <a href="http://hayashiha.jp/english/news/index.html" target="_blank" rel="noopener">Japan Karatedo Hayashi-ha Shitoryukai</a>, <a href="http://www.usankf.org/" target="_blank" rel="noopener">USA NKF</a> and <a href="http://www.wkf.net" target="_blank" rel="noopener">WKF</a>.
+    Instruction is also offered through the San Ramon and Pleasant Hill community centers by Sensei Johanna Abello (3rd degree black belt) and William Fuentes (5th degree black belt).</p>
+    <p class="social">{social}</p>
+    <p class="copy">{NAME} &middot; {e(ADDRESS)} &middot; Unofficial redesign concept</p>
   </div>
-  <div class="wrap copy">&copy; {year} {NAME}. Unofficial redesign concept.</div>
 </footer>
 <script src="js/main.js"></script>
 {extra_body}
@@ -235,111 +266,48 @@ def page(fname, title, body, description, extra_body=""):
 """
 
 
-def hero_small(eyebrow, h1, lead):
-    return f"""<section class="hero small">
-  <img class="hero-bg" src="{wix(HERO, 1600, 500, 'hero.jpg')}" alt="" fetchpriority="high">
-  <div class="wrap"><div class="kanji">空手道</div><h1>{h1}</h1><p class="lede">{lead}</p></div>
-</section>"""
-
-
-def free_class_band():
-    return f"""<section class="cta-band"><div class="wrap">
-  <div><h2>Drop in for a free introductory class</h2><p>No experience needed. Come see what we are about.</p></div>
-  <a class="btn btn-light" href="mailto:{EMAIL}?subject=Free%20introductory%20class">Book your free class</a>
-</div></section>"""
+def title_block(h1, lead=""):
+    logos = f'<img class="logo" src="{wix(LOGO_FLAG, 240, 186, "logo.jpg")}" alt="" width="120" height="93">'
+    fist = f'<img class="logo" src="{wix(LOGO_FIST, 192, 208, "fist.jpg")}" alt="" width="96" height="104">'
+    return f"""<section class="pagehead"><div class="wrap narrow"><div class="headrow">{logos}<h1>{h1}</h1>{fist}</div><hr class="gold">{f'<p class="lead">{lead}</p>' if lead else ''}</div></section>"""
 
 
 def build_index():
-    recent = sorted(NEWS, key=lambda n: n[0], reverse=True)[:3]
-    news_html = "".join(
-        f'<article class="card card-pad"><span class="tag {c}">{CAT_LABEL[c]}</span><h3>{e(t)}</h3>'
-        f'<p class="muted">{datetime.date.fromisoformat(d):%B %-d, %Y}</p></article>'
-        for d, c, t, s, m in recent)
-    lead = INSTRUCTORS[0]
+    bio = "".join(f"<li>{e(t)}</li>" for t in SHIHAN)
     body = f"""<section class="hero">
-  <img class="hero-bg" src="{wix(HERO, 1800, 900, 'hero.jpg')}" alt="" fetchpriority="high">
-  <div class="wrap">
-    <div class="kanji">空手道 · SAN RAMON</div>
-    <h1>Traditional karate.<br>Lasting character.</h1>
-    <p class="lede">The All American Black Belt Academy teaches martial arts with traditional values of respect, self-discipline, humility and dedication to excellence.</p>
-    <div class="actions">
-      <a class="btn btn-red" href="mailto:{EMAIL}?subject=Free%20introductory%20class">Try a free class</a>
-      <a class="btn btn-ghost" href="classes.html">See the schedule</a>
-    </div>
-  </div>
-</section>
-
-<section class="section"><div class="wrap grid g2" style="align-items:center;gap:48px">
-  <div>
-    <p class="eyebrow">About the academy</p>
-    <h2>High-level instruction. World-class athletes.</h2>
-    <p>AABBA is well known for its high-level instruction and world-class athletes, but most notably for its holistic methods to teach skills with an emphasis on health and fitness wellness.</p>
+  <img class="hero-bg" src="{wix(HERO, 1600, 700, 'belts.jpg')}" alt="" fetchpriority="high">
+  <div class="wrap"><div class="panel">
+    <p>The All American Black Belt Academy believes in and teaches Martial arts with traditional values of respect, self-discipline, humility and dedication to excellence.</p>
+    <p>AABBA is well known for its high-level instruction and world-class athletes, but most notably, for its holistic methods to teach skills with an emphasis on health and fitness wellness.</p>
     <p>Shihan Hultin has had a positive impact on students&rsquo; lives while developing lasting relationships that will be remembered for years to come.</p>
-  </div>
-  <div class="grid g3" style="gap:20px">
-    <div class="value"><h3>Respect</h3><p>Bowing in, bowing out, and treating everyone on the floor well.</p></div>
-    <div class="value"><h3>Discipline</h3><p>Showing up, working hard and finishing what you start.</p></div>
-    <div class="value"><h3>Humility</h3><p>Every belt is the start of the next thing to learn.</p></div>
-  </div>
+  </div></div>
+</section>
+{title_block("Classes and Courses")}
+<section class="section"><div class="wrap narrow">{day_cards()}
+  <p class="note">Check the <a href="calendar.html">monthly calendar</a> for holidays and special events.</p></div></section>
+<section class="section shihan"><div class="wrap narrow">
+  <h2>Shihan Hultin &amp; his dojo</h2>
+  <ul>{bio}</ul>
 </div></section>
-
-<section class="section dark"><div class="wrap">
-  <p class="eyebrow">Competition record</p>
-  <h2>Built on effort</h2>
-  <div class="stats">
-    <div class="stat"><b>170+</b><span>competitors at our annual dojo tournament</span></div>
-    <div class="stat"><b>63</b><span>medals at the 2024 Ryukyukan tournament</span></div>
-    <div class="stat"><b>8&times;</b><span>national kata champion on our staff</span></div>
-    <div class="stat"><b>7th</b><span>degree black belt Master Instructor</span></div>
-  </div>
-</div></section>
-
-<section class="section"><div class="wrap grid g2" style="align-items:center;gap:48px">
-  <div class="card"><img src="{wix(lead[2], 700, 800, 'carl-hultin.jpg')}" alt="{lead[1]}" loading="lazy" width="700" height="800" style="width:100%;height:auto"></div>
-  <div>
-    <p class="eyebrow">Meet your instructors</p>
-    <h2>{lead[1]}, {lead[0]}</h2>
-    <p>7th Degree Black Belt in Hayashi-ha Shitoryu Karate-do, Vice President of the USA National Karate Federation and a World Karate Federation judge, leading a staff of champion competitors and coaches.</p>
-    <div class="actions"><a class="btn btn-red" href="instructors.html">Meet the team</a></div>
-  </div>
-</div></section>
-
-<section class="section alt"><div class="wrap">
-  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><h2>Latest news</h2><a href="news.html"><b>All news &rarr;</b></a></div>
-  <div class="grid g3">{news_html}</div>
-</div></section>
-
-{free_class_band()}
-
-<section class="section"><div class="wrap grid g2" style="gap:48px;align-items:center">
-  <div><p class="eyebrow">Visit us</p><h2>Find the dojo</h2>{contact_list()}
-    <p class="muted" style="margin-top:20px">Classes run Monday to Friday, 4&ndash;8 PM. Saturdays are reserved for promotions, seminars and private lessons. We also teach through the San Ramon and Pleasant Hill community centers.</p></div>
-  <div class="card card-pad"><h3>Class times</h3><p>Kids and adult classes by belt level, plus kumite, weapons and competition team.</p><a class="btn btn-red" href="classes.html">View classes</a></div>
-</div></section>"""
-    return page("index.html", "Welcome", body, "Traditional Shitoryu karate for kids and adults in San Ramon, CA. Try a free introductory class.")
+{free_class()}"""
+    return page("index.html", "Welcome", body, "Traditional Shitoryu karate for kids and adults in San Ramon, CA. Drop in for a free introductory class.")
 
 
 def build_instructors():
     cards = []
-    for i, (role, name, img, items) in enumerate(INSTRUCTORS):
+    for role, name, img, items in INSTRUCTORS:
         lis = "".join(f"<li>{e(x)}</li>" for x in items)
-        size = (600, 800) if i == 0 else (300, 400)
-        cards.append(f"""<article class="card person{' lead' if i == 0 else ''}">
-  <img src="{wix(img, *size, name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="{'eager' if i == 0 else 'lazy'}" width="{size[0]}" height="{size[1]}">
-  <div><p class="role">{role}</p><h3>{name}</h3><ul>{lis}</ul></div></article>""")
-    body = hero_small("", "Our instructors", "Champions, referees and coaches who teach with patience and high standards.") + \
-        f'<section class="section"><div class="wrap"><div class="people">{"".join(cards)}</div></div></section>' + free_class_band()
+        cards.append(f"""<article class="person"><img src="{wix(img, 300, 400, name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="lazy" width="300" height="400">
+<div><h3>{role} {name}</h3><ul>{lis}</ul></div></article>""")
+    body = title_block("Instructors") + f'<section class="section"><div class="wrap narrow"><div class="people">{"".join(cards)}</div></div></section>' + free_class()
     return page("instructors.html", "Instructors", body, "Meet the black belt instructors at All American Black Belt Academy.")
 
 
 def build_classes():
-    chips = '<button class="chip" data-day="all" aria-pressed="true">All days</button>' + "".join(
-        f'<button class="chip" data-day="{a}" aria-pressed="false">{full}</button>' for a, full in DAYS)
     cards = []
     for name, belts, sched in CLASSES:
-        rows = "".join(f'<li data-day="{a}"><b>{full}</b><span>{" &middot; ".join(sched[a])}</span></li>'
-                       for a, full in DAYS if a in sched)
-        cards.append(f'<article class="card class-card"><h3>{e(name)}</h3><p class="belts">{e(belts)}</p><ul class="times">{rows}</ul></article>')
+        rows = "".join(f'<li><b>{full}</b><span>{" &amp; ".join(sched[a])}</span></li>' for a, full in DAYS if a in sched)
+        cards.append(f'<article class="daycard"><h3>{e(name)}</h3><p class="belts">{e(belts)}</p><ul class="times">{rows}</ul></article>')
     slides = "".join(
         f'<div class="slide" role="group" aria-roledescription="slide" aria-label="Photo {i + 1} of {len(CLASS_PHOTOS)}">'
         f'<img src="{wix(m, 1000, 625, "class.jpg")}" alt="{e(a)}" loading="{"eager" if i == 0 else "lazy"}" width="1000" height="625"></div>'
@@ -347,8 +315,8 @@ def build_classes():
     thumbs = "".join(
         f'<button aria-label="Show photo {i + 1}" aria-current="false"><img src="{wix(m, 168, 116, "t.jpg")}" alt="" loading="lazy" width="84" height="58"></button>'
         for i, (m, a) in enumerate(CLASS_PHOTOS))
-    body = hero_small("", "Classes &amp; schedule", "Monday to Friday, by belt level. Saturdays are reserved for promotions, seminars and private lessons.") + f"""
-<section class="section"><div class="wrap">
+    body = title_block("Classes", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars and private lessons.") + f"""
+<section class="section"><div class="wrap narrow">
   <div class="carousel" data-carousel tabindex="0" aria-roledescription="carousel" aria-label="Class photos">
     <div class="track">{slides}</div>
     <button class="car-btn prev" aria-label="Previous photo">&#8249;</button>
@@ -357,12 +325,8 @@ def build_classes():
     <p class="car-count" aria-live="polite"></p>
   </div>
 </div></section>
-<section class="section alt"><div class="wrap">
-  <p class="eyebrow">Weekly schedule</p><h2>Find your class</h2>
-  <div class="chips" data-day-filter role="group" aria-label="Filter by day">{chips}</div>
-  <div class="classes">{"".join(cards)}</div>
-  <p class="muted" style="margin-top:24px">We also offer programs through the San Ramon and Pleasant Hill community centers. Check the <a href="calendar.html"><b>monthly calendar</b></a> for holidays and special events.</p>
-</div></section>""" + free_class_band()
+<section class="section"><div class="wrap narrow"><div class="daygrid">{"".join(cards)}</div>
+  <p class="note">Or see the <a href="index.html">schedule by day</a> on the welcome page.</p></div></section>""" + free_class()
     return page("classes.html", "Classes", body, "Class schedule by belt level: kids, advanced, kumite, weapons and competition team.")
 
 
@@ -382,14 +346,14 @@ def build_news():
             if m:
                 med = '<span class="medals" aria-label="Medals">' + "".join(
                     f'<span class="{k}">{v} {n}</span>' for k, v, n in zip("gsb", m, ["gold", "silver", "bronze"]) if v) + "</span>"
-            rows.append(f"""<li class="news-item" data-cat="{c}"><time datetime="{d}"><b>{dt:%b} {dt.day}</b>{y}</time>
+            rows.append(f"""<li class="news-item" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
 <div><h3>{e(t)}</h3><p><span class="tag {c}">{CAT_LABEL[c]}</span>{e(s)}</p>{med}</div></li>""")
-        groups.append(f'<section class="year-group"><h2>{y} <small>{len(its)} update{"s" if len(its) != 1 else ""}</small></h2><ul class="news-list">{"".join(rows)}</ul></section>')
-    body = hero_small("", "News &amp; updates", "Tournament results, promotions and training events, newest first.") + f"""
-<section class="section"><div class="wrap">
+        groups.append(f'<section class="year-group"><h2>{y}</h2><ul class="news-list">{"".join(rows)}</ul></section>')
+    body = title_block("News &amp; Updates", "Tournament results, promotions and training events, newest first.") + f"""
+<section class="section"><div class="wrap narrow">
   <div class="filters" data-news-filter role="group" aria-label="Filter news">{chips}</div>
   {"".join(groups)}
-</div></section>"""
+</div></section>""" + free_class()
     return page("news.html", "News & Updates", body, "Tournament results, black belt promotions and training events from AABBA.")
 
 
@@ -398,23 +362,22 @@ def build_media():
         f'<button data-full="{wix(m, 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(a)}"><img src="{wix(m, 480, name="thumb.jpg")}" alt="{e(a)}" loading="lazy"></button>'
         for m, a in CLASS_PHOTOS)
     kata = "".join(f"<li>{k}</li>" for k in KATA)
-    body = hero_small("", "Media", "Photos from the dojo and the kata we practice.") + f"""
-<section class="section"><div class="wrap"><p class="eyebrow">Photos</p><h2>Life at the dojo</h2>
-  <div class="masonry">{photos}</div></div></section>
-<section class="section alt"><div class="wrap"><p class="eyebrow">Kata videos</p><h2>Kata curriculum</h2>
-  <p class="muted">Video links can be added next to each kata once the academy shares them.</p>
+    body = title_block("Media", "Photos from the dojo and the kata we practice.") + f"""
+<section class="section"><div class="wrap narrow"><h2>Photos</h2><div class="masonry">{photos}</div></div></section>
+<section class="section"><div class="wrap narrow"><h2>Kata</h2>
+  <p class="note">Video links can be added next to each kata once the academy shares them.</p>
   <ul class="kata-list">{kata}</ul></div></section>
-<div class="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photo"><button class="x" aria-label="Close">&times;</button><img alt=""></div>"""
-    return page("media.html", "Media", body, "Photos and kata videos from All American Black Belt Academy.")
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photo"><button class="x" aria-label="Close">&times;</button><img alt=""></div>""" + free_class()
+    return page("media.html", "Media", body, "Photos and kata from All American Black Belt Academy.")
 
 
 def build_calendar():
+    jump = "".join(f'<a class="chip" href="#m{i}">{n}</a>' for i, (n, m) in enumerate(CALENDAR))
     tabs = "".join(
-        f'<section class="section{" alt" if i % 2 else ""}" id="m{i}"><div class="wrap"><h2>{n}</h2><div class="cal-frame"><img src="{wix(m, 1200, name="cal.png")}" alt="{n} class schedule" loading="{"eager" if i == 0 else "lazy"}"></div></div></section>'
+        f'<section class="section" id="m{i}"><div class="wrap narrow"><h2>{n}</h2><div class="cal-frame"><img src="{wix(m, 1200, name="cal.png")}" alt="{n} class schedule" loading="{"eager" if i == 0 else "lazy"}"></div></div></section>'
         for i, (n, m) in enumerate(CALENDAR))
-    jump = "".join(f'<a class="chip" href="#m{i}" style="text-decoration:none">{n}</a>' for i, (n, m) in enumerate(CALENDAR))
-    body = hero_small("", "Calendar", "Monthly schedules, including holidays and special events.") + \
-        f'<div class="wrap" style="padding-top:28px"><div class="chips">{jump}</div></div>' + tabs
+    body = title_block("Calendar", "Monthly schedules, including holidays and special events.") + \
+        f'<div class="wrap narrow"><div class="filters">{jump}</div></div>' + tabs + free_class()
     return page("calendar.html", "Calendar", body, "Monthly class calendar for All American Black Belt Academy.")
 
 
