@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generates the static pages in the repo root. Run: python3 tools/build.py"""
 import datetime
+import hashlib
 import html
 import pathlib
 
@@ -189,6 +190,11 @@ PAGES = [("index.html", "Welcome"), ("instructors.html", "Instructors"), ("class
 e = html.escape
 
 
+def ver(path):
+    """Content hash appended to asset URLs so browsers fetch the new file after each change."""
+    return hashlib.md5((ROOT / path).read_bytes()).hexdigest()[:8]
+
+
 def day_cards():
     cards = []
     for a, full in DAYS:
@@ -237,7 +243,7 @@ def page(fname, title, body, description, extra_body=""):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v={ver('css/styles.css')}">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -259,7 +265,7 @@ def page(fname, title, body, description, extra_body=""):
     <p class="copy">{NAME} &middot; {e(ADDRESS)} &middot; Unofficial redesign concept</p>
   </div>
 </footer>
-<script src="js/main.js"></script>
+<script src="js/main.js?v={ver('js/main.js')}"></script>
 {extra_body}
 </body>
 </html>

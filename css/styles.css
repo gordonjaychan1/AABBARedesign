@@ -65,7 +65,7 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 @media (max-width: 520px) { .logo { height: 44px; } }
 
 /* Day cards (as on the old site) */
-.daygrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 8px; }
+.daygrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 8px; align-items: start; }
 .daycard { background: #fff; padding: 24px 24px 20px; box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
 .daycard h3 { font-family: var(--font-day); font-weight: 400; font-size: 1.8rem; letter-spacing: .04em; color: #333; padding-bottom: 6px; border-bottom: 2px solid var(--gold); margin-bottom: 14px; }
 .daycard ul { margin: 0 0 16px; padding-left: 1.1em; font-size: .98rem; line-height: 1.55; }
