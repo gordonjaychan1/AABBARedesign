@@ -14,10 +14,11 @@ MAPS = "https://www.google.com/maps/search/?api=1&query=" + ADDRESS.replace(" ",
 EMAIL = "Laura.aabba@icloud.com"
 PHONE_DISPLAY = "(925) 829-4265"
 PHONE_TEL = "+19258294265"
+# (name, link, square logo icon used on the old site)
 SOCIAL = [
-    ("Instagram", "https://www.instagram.com/aabba.karate/"),
-    ("Facebook", "https://www.facebook.com/Shitorkaratedo/"),
-    ("Yelp", "https://www.yelp.com/biz/all-american-black-belt-academy-san-ramon"),
+    ("Yelp", "https://www.yelp.com/biz/all-american-black-belt-academy-san-ramon", "263c6eefe13c431681f9363e2e92ddb7.png"),
+    ("Instagram", "https://www.instagram.com/aabba.karate/", "8d6893330740455c96d218258a458aa4.png"),
+    ("Facebook", "https://www.facebook.com/Shitorkaratedo/", "e316f544f9094143b9eac01f1f19e697.png"),
 ]
 
 
@@ -205,7 +206,8 @@ def free_class():
 def page(fname, title, body, description, extra_body=""):
     cur = ' aria-current="page"'
     nav = "".join(f'<li><a href="{h}"{cur if f == fname else ""}>{e(t)}</a></li>' for f, h, t in PAGES)
-    social = "".join(f'<a href="{u}" target="_blank" rel="noopener">{n}</a>' for n, u in SOCIAL)
+    social = "".join(f'<a href="{u}" target="_blank" rel="noopener" aria-label="{n}" title="{n}">'
+                     f'<img src="{wix(icon, 80, 80, n.lower() + ".png")}" alt="" width="40" height="40"></a>' for n, u, icon in SOCIAL)
     full_title = "Dojo | " + NAME + " | San Ramon" if fname == "index.html" else f"{title} | {NAME}"
     return f"""<!doctype html>
 <html lang="en">
@@ -236,7 +238,7 @@ def page(fname, title, body, description, extra_body=""):
   <div class="wrap">
     <p>Affiliated with <a href="http://hayashiha.jp/english/news/index.html" target="_blank" rel="noopener">Japan Karatedo Hayashi-ha Shitoryukai</a>, <a href="http://www.usankf.org/" target="_blank" rel="noopener">USA NKF</a> and <a href="http://www.wkf.net" target="_blank" rel="noopener">WKF</a>.
     Instruction is also offered through the San Ramon and Pleasant Hill community centers by Sensei Johanna Abello (3rd degree black belt) and William Fuentes (5th degree black belt).</p>
-    <p class="social">{social}</p>
+    <div class="social">{social}</div>
     <p class="copy">{NAME} &middot; {e(ADDRESS)} &middot; Unofficial redesign concept</p>
   </div>
 </footer>
@@ -328,14 +330,17 @@ def build_news():
             d, c = it["date"], it["category"]
             dt = datetime.date.fromisoformat(d)
             text = "".join(f"<p>{e(t)}</p>" for t in it["text"])
+            photo = (f'<button class="news-photo" data-full="{wix(it["photo"], 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(it["title"])}">'
+                     f'<img src="{wix(it["photo"], 480, 354, "news.jpg")}" alt="" loading="lazy" width="480" height="354"></button>')
             rows.append(f"""<li class="news-item" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
-<div><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div></li>""")
+<div class="news-body"><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div>{photo}</li>""")
         groups.append(f'<section class="year-group"><h2>{y}</h2><ul class="news-list">{"".join(rows)}</ul></section>')
     body = title_block("News &amp; Updates", "Tournament results, promotions and training events.") + f"""
 <section class="section"><div class="wrap narrow">
   <div class="filters" data-news-filter role="group" aria-label="Filter news">{chips}</div>
   {"".join(groups)}
-</div></section>""" + free_class()
+</div></section>
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photo"><button class="x" aria-label="Close">&times;</button><img alt=""></div>""" + free_class()
     return page("news.html", "News & Updates", body, "Tournament results, black belt promotions and training events from AABBA.")
 
 
