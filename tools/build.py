@@ -265,7 +265,7 @@ def build_instructors():
     cards = []
     for role, name, img, items in INSTRUCTORS:
         lis = "".join(f"<li>{e(x)}</li>" for x in items)
-        cards.append(f"""<article class="person"><img src="{wix(img, 600, name=name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="lazy" width="600" height="400">
+        cards.append(f"""<article class="person"><img src="{wix(img, 480, name=name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="lazy" width="480" height="480">
 <div><h3>{role} {name}</h3><ul>{lis}</ul></div></article>""")
     body = title_block("Instructors") + f'<section class="section"><div class="wrap narrow"><div class="people">{"".join(cards)}</div></div></section>' + free_class()
     return page("instructors.html", "Instructors", body, "Meet the black belt instructors at All American Black Belt Academy.")
