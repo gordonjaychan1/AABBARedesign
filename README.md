@@ -6,12 +6,14 @@ Plain HTML/CSS/JS, no framework and no build step needed to host it.
 ## Run locally
 
 ```bash
-python3 -m http.server 8000   # then open http://localhost:8000
+python3 -m http.server 8000   # then open http://localhost:8000/index.html
 ```
 
 ## Editing content
 
-Pages are generated from `tools/build.py` (schedule, news, instructors and calendar data live at the top of that file):
+Pages are generated from `tools/build.py`. Schedule, instructors and calendar data live at the top of that file; news posts live in `data/news.json`.
+
+Links leave off `.html` (for example `classes` instead of `classes.html`). GitHub Pages serves both, but `python3 -m http.server` does not, so menu links 404 when previewing that way.
 
 ```bash
 python3 tools/build.py

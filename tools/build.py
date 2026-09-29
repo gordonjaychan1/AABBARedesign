@@ -3,6 +3,7 @@
 import datetime
 import hashlib
 import html
+import json
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -85,23 +86,38 @@ INSTRUCTORS = [
         "Academy Administrator"]),
 ]
 
-# (name, belts, {day: [times]})
+# (name, belts, {day: [times]}, photo shown on the block on the old Classes page)
 CLASSES = [
     ("Kids Beginners", "White to Orange Stripe Belt", {
         "Mon": ["6:00 – 6:45 PM"], "Tue": ["4:00 – 4:45 PM"],
-        "Wed": ["4:00 – 4:45 PM", "6:00 – 6:45 PM"], "Thu": ["4:00 – 4:45 PM"], "Fri": ["4:00 – 4:45 PM"]}),
+        "Wed": ["4:00 – 4:45 PM", "6:00 – 6:45 PM"], "Thu": ["4:00 – 4:45 PM"], "Fri": ["4:00 – 4:45 PM"]},
+     "4f0023_faed16fd04b049038638d8ab0aa770c6~mv2.jpg"),
     ("Kids Novice", "Blue to Purple Belt", {
         "Mon": ["4:00 – 4:45 PM"], "Tue": ["6:00 – 6:45 PM"], "Wed": ["5:00 – 5:45 PM"],
-        "Thu": ["5:00 – 5:45 PM"], "Fri": ["5:00 – 5:45 PM"]}),
+        "Thu": ["5:00 – 5:45 PM"], "Fri": ["5:00 – 5:45 PM"]},
+     "4f0023_2f0d375192dd4fae93770bd32607adc7~mv2.jpg"),
     ("Kids Intermediate", "Purple Stripe to Red Belt", {
-        "Mon": ["5:00 – 5:45 PM"], "Tue": ["6:00 – 6:45 PM"], "Thu": ["5:00 – 5:45 PM"], "Fri": ["5:00 – 5:45 PM"]}),
-    ("Advanced", "Red, Brown and Black Belt", {
-        "Tue": ["7:00 – 8:00 PM"], "Wed": ["7:00 – 8:00 PM"], "Thu": ["7:00 – 8:00 PM"]}),
-    ("All Members Karate", "Blue Belts and above", {
-        "Mon": ["7:00 – 8:00 PM"], "Fri": ["6:00 – 7:00 PM"]}),
-    ("Kumite", "Purple Belts and above", {"Tue": ["5:00 – 5:45 PM"]}),
-    ("Weapons", "All ranks", {"Thu": ["6:00 – 6:45 PM"]}),
-    ("Competition Team Practice", "Team members", {"Fri": ["7:00 – 9:15 PM"]}),
+        "Mon": ["5:00 – 5:45 PM"], "Tue": ["6:00 – 6:45 PM"], "Thu": ["5:00 – 5:45 PM"], "Fri": ["5:00 – 5:45 PM"]},
+     "4f0023_808280f8d2f14b598703bf8bcbbb1ab9~mv2.jpeg"),
+    ("Advanced Class", "Red, Brown, and Black Belt", {
+        "Tue": ["7:00 – 8:00 PM"], "Wed": ["7:00 – 8:00 PM"], "Thu": ["7:00 – 8:00 PM"]},
+     "4f0023_1fbca9b442764e30828e1c1630265101~mv2.jpg"),
+    ("All Members Karate", "Blue Belts and Above", {
+        "Mon": ["7:00 – 8:00 PM"], "Fri": ["6:00 – 7:00 PM"]},
+     "4f0023_ebda3d8b7f7f42be9029b20939732cf2~mv2.jpg"),
+    ("Competition Team Practice", "", {"Fri": ["7:00 – 9:15 PM"]},
+     "4f0023_94e399641ccc4382be8ef01aa5e93e7f~mv2.jpg"),
+    ("Weapons Class", "", {"Thu": ["6:00 – 6:45 PM"]},
+     "4f0023_6b0d422afcf1462cac92c5e5ce1ea5cb~mv2.jpg"),
+    ("Kumite Class", "Purple Belts and Above", {"Tue": ["5:00 – 5:45 PM"]},
+     "4f0023_ff513c1a7a9c4a1798e85ecdbadb8a67~mv2.jpg"),
+]
+# Wide photos from the slideshow at the top of the old Classes page, in its order
+SLIDESHOW = [
+    "4f0023_40d8149e1c264fbb8a22d32f32ee1a43~mv2.jpeg",
+    "4f0023_908364a7309d4af7b87e13291f7ce3b2~mv2_d_4898_2423_s_4_2.jpeg",
+    "5df506_373f7befc11e44438d4aeaba9162975a~mv2_d_6285_2545_s_4_2.jpg",
+    "5df506_12dbff89fd8747cd97f8d59a250a6bd7~mv2_d_7217_2217_s_2.jpg",
 ]
 DAYS = [("Mon", "Monday"), ("Tue", "Tuesday"), ("Wed", "Wednesday"), ("Thu", "Thursday"), ("Fri", "Friday")]
 
@@ -116,51 +132,8 @@ CLASS_PHOTOS = [
     ("4f0023_94e399641ccc4382be8ef01aa5e93e7f~mv2.jpg", "Dojo training"),
 ]
 
-# (iso date, category, title, summary, (gold, silver, bronze) or None)
-NEWS = [
-    ("2026-02-28", "event", "Annual Dojo Tournament", "Held at a new venue, Ultimate Fieldhouse. We are proud of all of our students for performing their best and showcasing their hard work.", None),
-    ("2024-11-02", "tournament", "23rd Annual Ryukyukan International Karate and Kobudo Tournament", "Forty-four athletes competed in Dixon, CA.", (29, 19, 15)),
-    ("2024-10-06", "tournament", "2024 Fall Classic", "Thirty-two competitors took part in Yuba City.", (19, 13, 9)),
-    ("2024-09-15", "tournament", "Fiestas 51st Annual International Karate Championship", "The competition team traveled to Los Angeles and came home with 8 first-place and 1 second-place trophies.", None),
-    ("2024-04-28", "tournament", "2024 NCKF Karate Championships", "", (20, 10, 12)),
-    ("2024-04-13", "event", "2024 Dojo Tournament", "Students showed their skills in kata and kumite.", None),
-    ("2024-02-17", "tournament", "2024 AAU Pacific Southwest District Championship", "Twelve elite students traveled to San Diego.", (7, 3, 7)),
-    ("2024-02-06", "tournament", "2024 West Coast Championship", "Yuba City.", (18, 7, 13)),
-    ("2024-01-11", "training", "2024 Shugyo Class", "Our annual, challenging training class to start the year.", None),
-    ("2023-09-17", "tournament", "2023 Fiestas Invitational Karate Championship", "Team members competed in Los Angeles and brought home 5 second-place and 3 third-place trophies.", None),
-    ("2023-07-15", "tournament", "2023 USA Karate National Championships", "Elite competitors traveled to Richmond, Virginia.", (5, 1, 1)),
-    ("2023-04-09", "tournament", "2023 JIC / US Open", "Las Vegas.", (14, 6, 12)),
-    ("2023-02-18", "event", "2023 Dojo Tournament", "Students competed in kata and team kata divisions.", None),
-    ("2023-02-05", "tournament", "2023 West Coast Championships", "Yuba City.", (18, 12, 9)),
-    ("2023-01-12", "training", "2023 Shugyo", "Annual New Year training class featuring advanced students.", None),
-    ("2022-10-02", "tournament", "2022 Fall Classic Tournament", "Yuba City, elite team.", (15, 11, 10)),
-    ("2022-07-05", "tournament", "2022 USA National Championships", "Spokane, Washington. Four national champions.", None),
-    ("2022-05-14", "promotion", "May 2022 Black Belt Promotion", "“I am very pleased to see that students are improving thanks to their hard work.”", None),
-    ("2022-04-17", "tournament", "2022 USOPEN and Junior International Cup", "Las Vegas. Multiple medal winners.", None),
-    ("2022-03-27", "tournament", "2022 NCKF Championship", "Our young competitors did us proud.", (11, 3, 7)),
-    ("2022-03-12", "event", "2022 Dojo Tournament (Fundraiser)", "Supported athletes competing in national tournaments.", None),
-    ("2022-01-30", "tournament", "2022 West Coast Championships", "Yuba City.", (7, 8, 5)),
-    ("2022-01-24", "training", "Train with Sandra Sanchez, Olympic Gold Medalist", "Our students had the opportunity to train with an Olympic champion.", None),
-    ("2022-01-13", "training", "2022 Shugyo", "Brown and black belts took part in the annual New Year training.", None),
-    ("2021-12-20", "tournament", "2021 USA Open and Junior International Cup", "Las Vegas. Kyle won silver at JIC and gold at the US Open; Adrianna won gold at both events.", None),
-    ("2021-11-13", "promotion", "November 2021 Black Belt Promotion", "A new fitness test was introduced for black belt candidates.", None),
-    ("2021-11-06", "tournament", "Ryukyukan Championships", "Dixon.", (7, 3, 5)),
-    ("2021-10-03", "tournament", "Fall Classic Championships", "Our first tournament after the pandemic; nine athletes competed.", (5, 3, 0)),
-    ("2021-09-02", "tournament", "2021 National Championships", "Chicago.", (3, 0, 1)),
-    ("2021-05-15", "promotion", "2021 Black Belt Promotion", "Congratulations to our new black belts, who trained through lockdown.", None),
-    ("2020-02-22", "event", "2020 Dojo Tournament (Fundraiser)", "Over 170 competitors, raising funds for the US Open and National Championship.", None),
-    ("2020-02-09", "tournament", "2020 West Coast Championship", "Our 38-member team performed well.", None),
-    ("2020-01-08", "training", "2020 Shugyo", "Annual New Year training class with challenging drills.", None),
-    ("2019-11-16", "promotion", "Brown & Black Belt Promotion", "Brown and black belt examination and promotion.", None),
-    ("2019-10-06", "tournament", "Fall Classic Championships", "A 45-member team competed in Yuba City.", None),
-    ("2019-09-15", "tournament", "International Karate Championship", "Father and son John and Kyle Crose both took first-place trophies.", None),
-    ("2019-09-01", "event", "Upcoming Tournaments", "Schedule of tournaments from October 2019 through July 2020.", None),
-    ("2019-07-11", "tournament", "2019 National Championships", "Chicago, July 11–14. Seven medalists, including Adrianna Villesis, gold in Advanced Kata.", None),
-    ("2019-05-04", "tournament", "Okaigan & AJKL Tournament", "More than 30 elite team members competed.", None),
-    ("2019-04-19", "tournament", "2019 USA OPEN & Jr. International Cup", "Sixteen elite team members competed in Las Vegas.", None),
-    ("2019-03-31", "tournament", "National Qualifier", "The elite team earned the right to compete at the USA National Championship in Chicago.", None),
-    ("2019-02-24", "event", "2019 Dojo Tournament", "Over 170 athletes competed in kata and kumite.", None),
-]
+# Posts copied from the old News & Updates page: date, category, title, text paragraphs
+NEWS = json.loads((ROOT / "data" / "news.json").read_text(encoding="utf-8"))
 CHIP_LABEL = {"tournament": "Tournaments", "promotion": "Promotions", "training": "Training", "event": "Events"}
 CAT_LABEL = {"tournament": "Tournament", "promotion": "Promotion", "training": "Training", "event": "Event"}
 
@@ -184,8 +157,10 @@ ICONS = {
     "mail": '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
 }
 
-PAGES = [("index.html", "Welcome"), ("instructors.html", "Instructors"), ("classes.html", "Classes"),
-         ("news.html", "News & Updates"), ("media.html", "Media"), ("calendar.html", "Calendar")]
+# (output file, link href, menu label). Links omit .html; GitHub Pages serves classes.html at /classes.
+PAGES = [("index.html", "./", "Welcome"), ("instructors.html", "instructors", "Instructors"),
+         ("classes.html", "classes", "Classes"), ("news.html", "news", "News & Updates"),
+         ("media.html", "media", "Media"), ("calendar.html", "calendar", "Calendar")]
 
 e = html.escape
 
@@ -199,11 +174,11 @@ def day_cards():
     cards = []
     for a, full in DAYS:
         rows = []
-        for name, belts, sched in CLASSES:
+        for name, belts, sched, _ in CLASSES:
             for t in sched.get(a, []):
                 rows.append((t, name, belts))
         rows.sort(key=lambda r: (int(r[0].split(":")[0]) % 12 + (12 if "PM" in r[0] else 0), r[0]))
-        lis = "".join(f"<li><b>{t}</b> {e(n)} <span>({e(b)})</span></li>" for t, n, b in rows)
+        lis = "".join(f"<li><b>{t}</b> {e(n)}{f' <span>({e(b)})</span>' if b else ''}</li>" for t, n, b in rows)
         cards.append(f'<article class="daycard"><h3>{full}</h3><ul>{lis}</ul>'
                      f'<img src="{wix(DAY_PHOTOS[a], 480, 330, a + ".jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
     cards.append(f'<article class="daycard"><h3>Saturday</h3><ul><li><b>10:00 AM &ndash; 2:00 PM</b> Reserved for Promotions / Seminars / Private Lessons</li></ul>'
@@ -219,7 +194,7 @@ def contact_buttons():
 
 
 def free_class():
-    return f"""<section class="free"><div class="wrap">
+    return f"""<section class="free" id="free-class"><div class="wrap">
   <hr class="gold">
   <h2>Drop in for a free, introductory class</h2>
   <p class="addr"><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS)}</a></p>
@@ -229,7 +204,7 @@ def free_class():
 
 def page(fname, title, body, description, extra_body=""):
     cur = ' aria-current="page"'
-    nav = "".join(f'<li><a href="{f}"{cur if f == fname else ""}>{e(t)}</a></li>' for f, t in PAGES)
+    nav = "".join(f'<li><a href="{h}"{cur if f == fname else ""}>{e(t)}</a></li>' for f, h, t in PAGES)
     social = "".join(f'<a href="{u}" target="_blank" rel="noopener">{n}</a>' for n, u in SOCIAL)
     full_title = "Dojo | " + NAME + " | San Ramon" if fname == "index.html" else f"{title} | {NAME}"
     return f"""<!doctype html>
@@ -249,7 +224,7 @@ def page(fname, title, body, description, extra_body=""):
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html"><span class="title">{NAME}</span><span class="motto">Excellence Through Efforts</span></a>
+    <a class="brand" href="./"><span class="title">{NAME}</span><span class="motto">Excellence Through Efforts</span></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main"><ul>{nav}</ul></nav>
   </div>
@@ -272,10 +247,10 @@ def page(fname, title, body, description, extra_body=""):
 """
 
 
-def title_block(h1, lead=""):
+def title_block(h1, lead="", anchor=""):
     logos = f'<img class="logo" src="{wix(LOGO_FLAG, 240, 186, "logo.jpg")}" alt="" width="120" height="93">'
     fist = f'<img class="logo" src="{wix(LOGO_FIST, 192, 208, "fist.jpg")}" alt="" width="96" height="104">'
-    return f"""<section class="pagehead"><div class="wrap narrow"><div class="headrow">{logos}<h1>{h1}</h1>{fist}</div><hr class="gold">{f'<p class="lead">{lead}</p>' if lead else ''}</div></section>"""
+    return f"""<section class="pagehead"{f' id="{anchor}"' if anchor else ''}><div class="wrap narrow"><div class="headrow">{logos}<h1>{h1}</h1>{fist}</div><hr class="gold">{f'<p class="lead">{lead}</p>' if lead else ''}</div></section>"""
 
 
 def build_index():
@@ -286,11 +261,12 @@ def build_index():
     <p>The All American Black Belt Academy believes in and teaches Martial arts with traditional values of respect, self-discipline, humility and dedication to excellence.</p>
     <p>AABBA is well known for its high-level instruction and world-class athletes, but most notably, for its holistic methods to teach skills with an emphasis on health and fitness wellness.</p>
     <p>Shihan Hultin has had a positive impact on students&rsquo; lives while developing lasting relationships that will be remembered for years to come.</p>
+    <div class="actions"><a class="btn red" href="#free-class">Book a free class</a><a class="btn outline" href="#schedule">See the schedule</a></div>
   </div></div>
 </section>
-{title_block("Classes and Courses")}
+{title_block("Classes and Courses", anchor="schedule")}
 <section class="section"><div class="wrap narrow">{day_cards()}
-  <p class="note">Check the <a href="calendar.html">monthly calendar</a> for holidays and special events.</p></div></section>
+  <p class="note">Check the <a href="calendar">monthly calendar</a> for holidays and special events.</p></div></section>
 <section class="section shihan"><div class="wrap narrow">
   <h2>Shihan Hultin &amp; his dojo</h2>
   <ul>{bio}</ul>
@@ -311,51 +287,51 @@ def build_instructors():
 
 def build_classes():
     cards = []
-    for name, belts, sched in CLASSES:
-        rows = "".join(f'<li><b>{full}</b><span>{" &amp; ".join(sched[a])}</span></li>' for a, full in DAYS if a in sched)
-        cards.append(f'<article class="daycard"><h3>{e(name)}</h3><p class="belts">{e(belts)}</p><ul class="times">{rows}</ul></article>')
+    for name, belts, sched, photo in CLASSES:
+        rows = "".join(f'<li><b>{full}</b><span>{"<br>".join(sched[a])}</span></li>' for a, full in DAYS if a in sched)
+        sub = f'<p class="belts">{e(belts)}</p>' if belts else ""
+        cards.append(f'<article class="daycard classcard"><img src="{wix(photo, 540, 510, "class.jpg")}" alt="" loading="lazy" width="540" height="510">'
+                     f'<h3>{e(name)}</h3>{sub}<ul class="times">{rows}</ul></article>')
+    n = len(SLIDESHOW)
     slides = "".join(
-        f'<div class="slide" role="group" aria-roledescription="slide" aria-label="Photo {i + 1} of {len(CLASS_PHOTOS)}">'
-        f'<img src="{wix(m, 1000, 625, "class.jpg")}" alt="{e(a)}" loading="{"eager" if i == 0 else "lazy"}" width="1000" height="625"></div>'
-        for i, (m, a) in enumerate(CLASS_PHOTOS))
+        f'<div class="slide" role="group" aria-roledescription="slide" aria-label="Photo {i + 1} of {n}">'
+        f'<img src="{wix(m, 1400, 560, "slide.jpg")}" alt="" loading="{"eager" if i == 0 else "lazy"}" width="1400" height="560"></div>'
+        for i, m in enumerate(SLIDESHOW))
     thumbs = "".join(
-        f'<button aria-label="Show photo {i + 1}" aria-current="false"><img src="{wix(m, 168, 116, "t.jpg")}" alt="" loading="lazy" width="84" height="58"></button>'
-        for i, (m, a) in enumerate(CLASS_PHOTOS))
-    body = title_block("Classes", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars and private lessons.") + f"""
-<section class="section"><div class="wrap narrow">
+        f'<button aria-label="Show photo {i + 1}" aria-current="false"><img src="{wix(m, 200, 80, "t.jpg")}" alt="" loading="lazy" width="100" height="40"></button>'
+        for i, m in enumerate(SLIDESHOW))
+    body = title_block("Classes and Courses", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars and private lessons.") + f"""
+<section class="section"><div class="wrap">
   <div class="carousel" data-carousel tabindex="0" aria-roledescription="carousel" aria-label="Class photos">
     <div class="track">{slides}</div>
     <button class="car-btn prev" aria-label="Previous photo">&#8249;</button>
     <button class="car-btn next" aria-label="Next photo">&#8250;</button>
     <div class="thumbs">{thumbs}</div>
-    <p class="car-count" aria-live="polite"></p>
   </div>
 </div></section>
-<section class="section"><div class="wrap narrow"><div class="daygrid">{"".join(cards)}</div>
-  <p class="note">Or see the <a href="index.html">schedule by day</a> on the welcome page.</p></div></section>""" + free_class()
+<section class="section"><div class="wrap"><div class="daygrid">{"".join(cards)}</div>
+  <p class="note">Check the <a href="calendar">monthly calendar</a> for holidays and special events.</p></div></section>""" + free_class()
     return page("classes.html", "Classes", body, "Class schedule by belt level: kids, advanced, kumite, weapons and competition team.")
 
 
 def build_news():
-    items = sorted(NEWS, key=lambda n: n[0], reverse=True)
+    items = sorted(NEWS, key=lambda n: n["date"], reverse=True)
     years = {}
     for it in items:
-        years.setdefault(it[0][:4], []).append(it)
+        years.setdefault(it["date"][:4], []).append(it)
     chips = '<button class="chip" data-cat="all" aria-pressed="true">All</button>' + "".join(
         f'<button class="chip" data-cat="{k}" aria-pressed="false">{v}</button>' for k, v in CHIP_LABEL.items())
     groups = []
     for y, its in years.items():
         rows = []
-        for d, c, t, s, m in its:
+        for it in its:
+            d, c = it["date"], it["category"]
             dt = datetime.date.fromisoformat(d)
-            med = ""
-            if m:
-                med = '<span class="medals" aria-label="Medals">' + "".join(
-                    f'<span class="{k}">{v} {n}</span>' for k, v, n in zip("gsb", m, ["gold", "silver", "bronze"]) if v) + "</span>"
+            text = "".join(f"<p>{e(t)}</p>" for t in it["text"])
             rows.append(f"""<li class="news-item" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
-<div><h3>{e(t)}</h3><p><span class="tag {c}">{CAT_LABEL[c]}</span>{e(s)}</p>{med}</div></li>""")
+<div><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div></li>""")
         groups.append(f'<section class="year-group"><h2>{y}</h2><ul class="news-list">{"".join(rows)}</ul></section>')
-    body = title_block("News &amp; Updates", "Tournament results, promotions and training events, newest first.") + f"""
+    body = title_block("News &amp; Updates", "Tournament results, promotions and training events.") + f"""
 <section class="section"><div class="wrap narrow">
   <div class="filters" data-news-filter role="group" aria-label="Filter news">{chips}</div>
   {"".join(groups)}
@@ -380,7 +356,7 @@ def build_media():
 def build_calendar():
     jump = "".join(f'<a class="chip" href="#m{i}">{n}</a>' for i, (n, m) in enumerate(CALENDAR))
     tabs = "".join(
-        f'<section class="section" id="m{i}"><div class="wrap narrow"><h2>{n}</h2><div class="cal-frame"><img src="{wix(m, 1200, name="cal.png")}" alt="{n} class schedule" loading="{"eager" if i == 0 else "lazy"}"></div></div></section>'
+        f'<section class="section" id="m{i}"><div class="wrap narrow"><div class="cal-frame"><img src="{wix(m, 1200, name="cal.png")}" alt="{n} class schedule" loading="{"eager" if i == 0 else "lazy"}"></div></div></section>'
         for i, (n, m) in enumerate(CALENDAR))
     body = title_block("Calendar", "Monthly schedules, including holidays and special events.") + \
         f'<div class="wrap narrow"><div class="filters">{jump}</div></div>' + tabs + free_class()

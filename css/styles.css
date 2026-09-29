@@ -53,6 +53,12 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .hero-bg { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; }
 .panel { background: rgba(255, 255, 255, .88); padding: 28px 32px; font-size: 1.3rem; line-height: 1.55; max-width: 940px; margin-inline: auto; }
 .panel p:last-child { margin-bottom: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.btn { display: inline-block; padding: 12px 26px; font: 400 1.05rem var(--font); letter-spacing: .04em; text-decoration: none; border: 2px solid transparent; }
+.btn.red { background: var(--red); color: #fff; }
+.btn.red:hover { background: var(--red-dark); }
+.btn.outline { border-color: #333; color: #222; }
+.btn.outline:hover { background: #333; color: #fff; }
 @media (max-width: 600px) { .panel { padding: 20px; font-size: 1.1rem; } .hero { padding-block: 28px; } }
 
 /* Page heading with logos and gold rule */
@@ -65,20 +71,23 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 @media (max-width: 520px) { .logo { height: 44px; } }
 
 /* Day cards (as on the old site) */
-.daygrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 8px; align-items: start; }
-.daycard { background: #fff; padding: 24px 24px 20px; box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
-.daycard h3 { font-family: var(--font-day); font-weight: 400; font-size: 1.8rem; letter-spacing: .04em; color: #333; padding-bottom: 6px; border-bottom: 2px solid var(--gold); margin-bottom: 14px; }
-.daycard ul { margin: 0 0 16px; padding-left: 1.1em; font-size: .98rem; line-height: 1.55; }
+.daygrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 8px; align-items: start; }
+.daycard { background: #fff; padding: 20px 20px 16px; min-width: 0; box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
+.daycard h3 { font-family: var(--font-day); font-weight: 400; font-size: 1.6rem; letter-spacing: .04em; color: #333; padding-bottom: 6px; border-bottom: 2px solid var(--gold); margin-bottom: 14px; }
+.daycard ul { margin: 0 0 16px; padding-left: 1.1em; font-size: .95rem; line-height: 1.5; }
 .daycard li { margin-bottom: 8px; }
 .daycard li b { font-weight: 600; }
 .daycard li span { color: var(--muted); }
-.daycard img { width: 100%; height: auto; }
+.daycard img { width: 100%; height: auto; aspect-ratio: 480 / 330; object-fit: cover; }
 .daycard .belts { color: var(--muted); font-size: .95rem; margin: -6px 0 12px; }
 .daycard ul.times { list-style: none; padding: 0; }
 .daycard ul.times li { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #ddd; padding: 6px 0; margin: 0; }
-.daycard ul.times li span { color: var(--text); }
+.daycard ul.times li span { color: var(--text); text-align: right; white-space: nowrap; }
 .note { text-align: center; margin: 28px 0 0; font-size: 1rem; color: var(--muted); }
-@media (max-width: 700px) { .daygrid { grid-template-columns: 1fr; gap: 20px; } }
+.classcard img { margin-bottom: 16px; aspect-ratio: 540 / 510; object-fit: cover; }
+.classcard ul.times { margin-bottom: 0; }
+@media (max-width: 900px) { .daygrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .daygrid { grid-template-columns: 1fr; gap: 20px; } }
 
 /* Shihan bio */
 .shihan h2 { font-size: 1.9rem; text-align: center; margin-bottom: 18px; }
@@ -120,14 +129,14 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .carousel { position: relative; }
 .track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; background: #222; }
 .track::-webkit-scrollbar { display: none; }
-.slide { flex: 0 0 100%; scroll-snap-align: center; aspect-ratio: 16 / 10; }
+.slide { flex: 0 0 100%; scroll-snap-align: center; aspect-ratio: 5 / 2; }
 .slide img { width: 100%; height: 100%; object-fit: cover; }
-.car-btn { position: absolute; top: calc(50% - 40px); width: 46px; height: 46px; border: 0; background: rgba(17, 17, 17, .7); color: #fff; font-size: 1.6rem; cursor: pointer; }
+.car-btn { position: absolute; top: calc(50% - 50px); width: 46px; height: 46px; border: 0; background: rgba(17, 17, 17, .7); color: #fff; font-size: 1.6rem; cursor: pointer; }
 .car-btn:hover { background: var(--red); }
 .car-btn.prev { left: 0; }
 .car-btn.next { right: 0; }
 .thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 6px; }
-.thumbs button { flex: none; width: 84px; height: 58px; padding: 0; border: 2px solid transparent; cursor: pointer; opacity: .6; background: #222; }
+.thumbs button { flex: none; width: 100px; height: 40px; padding: 0; border: 2px solid transparent; cursor: pointer; opacity: .6; background: #222; }
 .thumbs button[aria-current="true"] { border-color: var(--red); opacity: 1; }
 .thumbs img { width: 100%; height: 100%; object-fit: cover; }
 .car-count { text-align: center; color: var(--muted); font-size: .9rem; margin: 4px 0 0; }
@@ -141,7 +150,7 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .news-item.hide { display: none; }
 .news-item time { font-weight: 600; font-size: .95rem; color: var(--muted); }
 .news-item h3 { margin: 0 0 4px; font-size: 1.15rem; font-weight: 600; }
-.news-item p { margin: 0 0 6px; font-size: 1rem; }
+.news-item p { margin: 8px 0 0; font-size: 1rem; }
 .tag { display: inline-block; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; padding: 2px 8px; background: #333; color: #fff; margin-right: 8px; vertical-align: 2px; }
 .tag.promotion { background: var(--red); }
 .tag.training { background: #2f5d50; }
