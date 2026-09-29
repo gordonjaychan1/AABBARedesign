@@ -12,7 +12,7 @@ NAME = "All American Black Belt Academy"
 ADDRESS = "21001 San Ramon Valley Blvd, A7, San Ramon, CA 94583"
 MAPS = "https://www.google.com/maps/search/?api=1&query=" + ADDRESS.replace(" ", "+")
 EMAIL = "Laura.aabba@icloud.com"
-PHONE_DISPLAY = "(925) 829-4265"
+PHONE_DISPLAY = "(925)-829-4265"
 PHONE_TEL = "+19258294265"
 # (name, link, square logo icon used on the old site)
 SOCIAL = [
@@ -174,14 +174,14 @@ def day_cards():
 def contact_buttons():
     return f"""<div class="contact-row">
   <a class="cbtn gray" href="mailto:{EMAIL}">{ICONS['mail']}<span>{EMAIL}</span></a>
-  <a class="cbtn red" href="tel:{PHONE_TEL}">{ICONS['phone']}<span>925 829 4265</span></a>
+  <a class="cbtn red" href="tel:{PHONE_TEL}">{ICONS['phone']}<span>{PHONE_DISPLAY}</span></a>
 </div>"""
 
 
 def free_class():
     return f"""<section class="free" id="free-class"><div class="wrap">
   <hr class="gold">
-  <h2>Drop in for a free, introductory class</h2>
+  <h2>Drop in for a Free Introductory Class</h2>
   <p class="addr"><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS)}</a></p>
   {contact_buttons()}
 </div></section>"""
@@ -247,14 +247,14 @@ def build_index():
     <p>The All American Black Belt Academy believes in and teaches Martial arts with traditional values of respect, self-discipline, humility and dedication to excellence.</p>
     <p>AABBA is well known for its high-level instruction and world-class athletes, but most notably, for its holistic methods to teach skills with an emphasis on health and fitness wellness.</p>
     <p>Shihan Hultin has had a positive impact on students&rsquo; lives while developing lasting relationships that will be remembered for years to come.</p>
-    <div class="actions"><a class="btn red" href="#free-class">Book a free class</a><a class="btn outline" href="#schedule">See the schedule</a></div>
+    <div class="actions"><a class="btn red" href="#free-class">Book a Free Class</a><a class="btn outline" href="#schedule">See the Schedule</a></div>
   </div></div>
 </section>
 {title_block("Classes and Courses", anchor="schedule")}
 <section class="section"><div class="wrap narrow">{day_cards()}
   <p class="note">Check the <a href="calendar">monthly calendar</a> for holidays and special events.</p></div></section>
 <section class="section shihan"><div class="wrap narrow">
-  <h2>Shihan Hultin &amp; his dojo</h2>
+  <h2>Shihan Hultin &amp; His Dojo</h2>
   <ul>{bio}</ul>
 </div></section>
 {free_class()}"""
@@ -265,7 +265,7 @@ def build_instructors():
     cards = []
     for role, name, img, items in INSTRUCTORS:
         lis = "".join(f"<li>{e(x)}</li>" for x in items)
-        cards.append(f"""<article class="person"><img src="{wix(img, 300, 400, name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="lazy" width="300" height="400">
+        cards.append(f"""<article class="person"><img src="{wix(img, 600, name=name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="lazy" width="600" height="400">
 <div><h3>{role} {name}</h3><ul>{lis}</ul></div></article>""")
     body = title_block("Instructors") + f'<section class="section"><div class="wrap narrow"><div class="people">{"".join(cards)}</div></div></section>' + free_class()
     return page("instructors.html", "Instructors", body, "Meet the black belt instructors at All American Black Belt Academy.")
@@ -283,7 +283,7 @@ def build_classes():
         f'<div class="slide" role="group" aria-roledescription="slide" aria-label="Photo {i + 1} of {n}">'
         f'<img src="{wix(m, 1800, 720, "slide.jpg")}" alt="" loading="{"eager" if i == 0 else "lazy"}" width="1800" height="720"></div>'
         for i, m in enumerate(SLIDESHOW))
-    body = title_block("Classes and Courses", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars and private lessons.") + f"""
+    body = title_block("Classes and Courses", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars, and private lessons.") + f"""
 <section class="section">
   <div class="carousel wide" data-carousel tabindex="0" aria-roledescription="carousel" aria-label="Class photos">
     <div class="track">{slides}</div>
@@ -315,7 +315,7 @@ def build_news():
             rows.append(f"""<li class="news-item" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
 <div class="news-body"><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div>{photo}</li>""")
         groups.append(f'<section class="year-group"><h2>{y}</h2><ul class="news-list">{"".join(rows)}</ul></section>')
-    body = title_block("News &amp; Updates", "Tournament results, promotions and training events.") + f"""
+    body = title_block("News &amp; Updates", "Tournament results, promotions, and training events.") + f"""
 <section class="section"><div class="wrap narrow">
   <div class="filters" data-news-filter role="group" aria-label="Filter news">{chips}</div>
   {"".join(groups)}

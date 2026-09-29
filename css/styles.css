@@ -112,12 +112,14 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 
 /* Instructors */
 .people { display: grid; gap: 32px; }
-.person { display: grid; grid-template-columns: 200px 1fr; gap: 24px; background: #fff; padding: 20px; box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
-.person img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; background: var(--gray); }
+.person { display: grid; grid-template-columns: 300px 1fr; gap: 24px; background: #fff; padding: 20px; box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
+.person img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 12%; background: var(--gray); }
+.person:first-child img { object-position: 50% 45%; }  /* Carl Hultin's source photo is a tight headshot */
 .person h3 { font-family: var(--font-day); font-weight: 400; font-size: 1.6rem; letter-spacing: .03em; color: #333; padding-bottom: 6px; border-bottom: 2px solid var(--gold); }
 .person ul { margin: 0; padding-left: 1.1em; font-size: 1rem; }
 .person li { margin-bottom: 4px; }
-@media (max-width: 560px) { .person { grid-template-columns: 1fr; } .person img { max-width: 220px; } }
+@media (min-width: 561px) and (max-width: 760px) { .person { grid-template-columns: 220px 1fr; } }
+@media (max-width: 560px) { .person { grid-template-columns: 1fr; } .person img { max-width: 360px; } }
 
 /* Chips */
 .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 8px; }
