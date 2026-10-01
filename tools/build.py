@@ -136,12 +136,31 @@ CALENDAR = [
     ("February 2027", "4f0023_90a41f5587154c13b30d157c3951ef9f~mv2.png"),
 ]
 
-# Kata from the old Media page. Add a YouTube video ID as the second value to show a player.
-KATA = [(k, "") for k in [
-    "Kihon Kata Ichi", "Kihon Kata Ni", "Kihon Kata San", "Kihon Kata Yon", "Kihon Kata Go",
-    "Heian Shodan", "Heian Nidan", "Heian Sandan", "Heian Yodan", "Heian Godan", "Ten No Kata",
-    "Chino Kata", "Jiin", "Jion", "Jitte", "Matsukaze", "Bassai Dai", "Rohai", "Kosokun Dai",
-    "Seienchin", "Jyuroku", "Shinsei"]]
+# Kata videos from the old Media page (Wix video IDs, matched to the kata name shown above each video)
+KATA = [
+    ("Kihon Kata Ichi", "4f0023_b4b3d3d7a19a42399457cb99cb2e2ae4"),
+    ("Kihon Kata Ni", "4f0023_197ca08b868841858f44a25de9c938a0"),
+    ("Kihon Kata San", "4f0023_8bc32b0dfa2941ecb5b7ff4cf092d166"),
+    ("Kihon Kata Yon", "4f0023_2f9439907cf3470e8e6073fc24c0dfa1"),
+    ("Kihon Kata Go", "4f0023_8cf09a9f66494be0b6a02b28faebb887"),
+    ("Heian Shodan", "4f0023_f3845daa83214a1f812dc25ca332e45b"),
+    ("Heian Nidan", "4f0023_b2598c3608f745aba49db76a285edfb1"),
+    ("Heian Sandan", "4f0023_226cf34adf7f432b80c1f4b5d1e3e24b"),
+    ("Heian Yodan", "4f0023_f15a6fb2e85b463cbe5ce4e135ad2235"),
+    ("Heian Godan", "4f0023_77aa5297453a4976a44504e5dd748e3b"),
+    ("Ten No Kata", "4f0023_e9e720598b23414bb84d9857f56a2ede"),
+    ("Chino Kata", "4f0023_31b3730e81554364aac77c356e64d46e"),
+    ("Jiin", "4f0023_6be42964115142e5840d6d06f27594ea"),
+    ("Jion", "4f0023_957acb61f7954498911661f463a9b57a"),
+    ("Jitte", "4f0023_b550a90292de485d998acdff2e08b352"),
+    ("Matsukaze", "4f0023_57ae0d5482174c6588f68b3f34f2e5ef"),
+    ("Bassai Dai", "4f0023_3183c35b456a45dab311a7f727aea87e"),
+    ("Rohai", "4f0023_4af65bfa3b7147a3abbf9af2247f8bc3"),
+    ("Kosokun Dai", "4f0023_f986770332984adba73c7a8b9351e56b"),
+    ("Seienchin", "4f0023_e848e0b0ecba4ca9aff1ca1fc3598d83"),
+    ("Jyuroku", "4f0023_e67b0f23757347e2b2aac5f19f787d3a"),
+    ("Shinsei", "4f0023_70ddea88bf344d5f8a599caa16fb95d3"),
+]
 
 # Belt tests locked by tools/encrypt_tests.py (no passwords in here)
 TESTS = json.loads((ROOT / "data" / "tests.json").read_text(encoding="utf-8"))
@@ -357,15 +376,14 @@ def build_gallery():
 
 
 def build_kata():
-    rows = []
-    for name, yt in KATA:
-        if yt:
-            action = f'<button class="btn red small" data-yt="{e(yt)}" aria-label="Watch {e(name)}">Watch</button>'
-        else:
-            action = '<span class="soon">Video coming soon</span>'
-        rows.append(f'<li><div class="kata-row"><span class="kata-name">{e(name)}</span>{action}</div></li>')
+    cards = []
+    for name, vid in KATA:
+        poster = f"https://static.wixstatic.com/media/{vid}f000.jpg/v1/fill/w_640,h_360,al_c,q_75/poster.jpg"
+        src = f"https://video.wixstatic.com/video/{vid}/720p/mp4/file.mp4"  # downloads only when played
+        cards.append(f'<article class="daycard kata-card"><h3>{e(name)}</h3>'
+                     f'<video controls preload="none" playsinline poster="{poster}" src="{src}" aria-label="{e(name)} kata video"></video></article>')
     body = title_block("Kata Videos", "Practice videos for each kata in our curriculum.") + f"""
-<section class="section"><div class="wrap narrow"><ul class="kata-list">{"".join(rows)}</ul></div></section>""" + free_class()
+<section class="section"><div class="wrap"><div class="daygrid">{"".join(cards)}</div></div></section>""" + free_class()
     return page("kata.html", "Kata Videos", body, "Kata practice videos from All American Black Belt Academy.")
 
 

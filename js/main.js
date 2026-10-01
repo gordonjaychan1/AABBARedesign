@@ -81,19 +81,6 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   }
 
-  // Kata videos: load the YouTube player only when someone presses Watch
-  document.querySelectorAll('[data-yt]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var f = document.createElement('iframe');
-      f.className = 'kata-video';
-      f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(b.dataset.yt) + '?autoplay=1&rel=0';
-      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-      f.title = b.getAttribute('aria-label');
-      b.closest('li').appendChild(f);
-      b.remove();
-    });
-  });
-
   // Belt tests: show / hide password
   var showpw = document.getElementById('showpw');
   if (showpw) showpw.addEventListener('change', function () {
