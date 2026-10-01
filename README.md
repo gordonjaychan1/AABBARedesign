@@ -52,4 +52,4 @@ Passwords and original PDFs live in `tests-private/`, which is git-ignored. **Ne
 python3 tools/encrypt_tests.py && python3 tools/build.py
 ```
 
-To change a password, edit it in `belts.json` and run step 3 again. `tools/make_sample_tests.py` creates placeholder tests with random passwords for demos, and writes `data/demo-passwords.json` so the page shows a "Demo passwords" box. **Delete `data/demo-passwords.json` before the real tests go up**, then rebuild.
+To change a password, edit it in `belts.json` and run step 3 again. `tools/make_sample_tests.py` creates placeholder tests for demos; each sample password is the rank plus "password" (for example `9kyupassword`, `shodanhopassword`). Passwords ignore capitals, spaces and hyphens.

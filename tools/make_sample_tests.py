@@ -2,28 +2,21 @@
 """Creates placeholder belt-test PDFs and a password for each, for demoing the Belt Tests page.
 
 Writes tests-private/ (git-ignored): sources/<belt>.pdf and belts.json.
-Also writes data/demo-passwords.json, which is published so people can try the demo.
-Before launch: delete data/demo-passwords.json, replace the PDFs with the real tests and the
-passwords with Sensei Eric's, then run tools/encrypt_tests.py.
+Sample passwords are the rank plus "password" (e.g. 9kyupassword, shodanhopassword).
+Before launch, replace the PDFs with the real tests and the passwords with Sensei Eric's,
+then run tools/encrypt_tests.py.
 """
 import json
 import pathlib
-import secrets
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PRIVATE = ROOT / "tests-private"
 
-BELTS = [(f"kyu{n}", f"{n}{suffix} Kyu") for n, suffix in
+# (id, label, sample password)
+BELTS = [(f"kyu{n}", f"{n}{suffix} Kyu", f"{n}kyupassword") for n, suffix in
          [(9, "th"), (8, "th"), (7, "th"), (6, "th"), (5, "th"), (4, "th"), (3, "rd"), (2, "nd"), (1, "st")]]
-BELTS += [("shodan-ho", "Shodan-Ho"), ("shodan", "Shodan")]
+BELTS += [("shodan-ho", "Shodan-Ho", "shodanhopassword"), ("shodan", "Shodan", "shodanpassword")]
 
-WORDS = ("maple river tiger cedar falcon harbor lantern meadow pebble summit thunder willow "
-         "anchor bamboo canyon dragon ember forest glacier island jasmine kettle lotus marble "
-         "nectar orchid panther quartz raven saddle tulip valley walnut zephyr breeze comet").split()
-
-
-def password():
-    return "-".join(secrets.choice(WORDS) for _ in range(3))
 
 
 def pdf(lines):
@@ -51,7 +44,7 @@ def pdf(lines):
 if __name__ == "__main__":
     (PRIVATE / "sources").mkdir(parents=True, exist_ok=True)
     belts = []
-    for bid, label in BELTS:
+    for bid, label, pw in BELTS:
         path = PRIVATE / "sources" / f"{bid}.pdf"
         path.write_bytes(pdf([
             "All American Black Belt Academy",
@@ -63,8 +56,6 @@ if __name__ == "__main__":
             "2. Name the kata required for this belt.",
             "3. What are the dojo's four traditional values?",
         ]))
-        belts.append({"id": bid, "label": label, "pdf": f"sources/{bid}.pdf", "password": password()})
+        belts.append({"id": bid, "label": label, "pdf": f"sources/{bid}.pdf", "password": pw})
     (PRIVATE / "belts.json").write_text(json.dumps(belts, indent=1))
-    demo = [{"id": b["id"], "label": b["label"], "password": b["password"]} for b in belts]
-    (ROOT / "data" / "demo-passwords.json").write_text(json.dumps(demo, indent=1))
     print(f"wrote {len(belts)} sample tests and passwords to {PRIVATE.relative_to(ROOT)}/")

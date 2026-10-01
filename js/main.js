@@ -81,15 +81,6 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   }
 
-  // Belt tests demo: "Try it" fills in a sample rank and password
-  document.querySelectorAll('[data-demo-belt]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      document.getElementById('belt').value = b.dataset.demoBelt;
-      document.getElementById('pw').value = b.dataset.demoPw;
-      document.getElementById('test-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  });
-
   // Belt tests: show / hide password
   var showpw = document.getElementById('showpw');
   if (showpw) showpw.addEventListener('change', function () {
