@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calendar | All American Black Belt Academy</title>
-<meta name="description" content="Monthly class calendar for All American Black Belt Academy.">
+<title>Belt Tests | All American Black Belt Academy</title>
+<meta name="description" content="Written belt tests for students of All American Black Belt Academy.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
@@ -17,11 +17,28 @@
   <div class="wrap">
     <a class="brand" href="./"><span class="title">All American Black Belt Academy</span><span class="motto">Excellence Through Efforts</span></a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
-    <nav class="nav" id="nav" aria-label="Main"><ul><li><a href="./">Welcome</a></li><li><a href="instructors">Instructors</a></li><li><a href="classes">Classes</a></li><li><a href="news">News &amp; Updates</a></li><li><a href="gallery">Gallery</a></li><li><a href="kata">Kata Videos</a></li><li><a href="tests">Belt Tests</a></li><li><a href="calendar" aria-current="page">Calendar</a></li></ul></nav>
+    <nav class="nav" id="nav" aria-label="Main"><ul><li><a href="./">Welcome</a></li><li><a href="instructors">Instructors</a></li><li><a href="classes">Classes</a></li><li><a href="news">News &amp; Updates</a></li><li><a href="gallery">Gallery</a></li><li><a href="kata">Kata Videos</a></li><li><a href="tests" aria-current="page">Belt Tests</a></li><li><a href="calendar">Calendar</a></li></ul></nav>
   </div>
 </header>
 <main id="main">
-<section class="pagehead"><div class="wrap narrow"><div class="headrow"><img class="logo" src="https://static.wixstatic.com/media/5df506_41dbd700c0724e0cbffbe98cc6886d88~mv2.jpg/v1/fill/w_240,h_186,al_c,q_75/logo.jpg" alt="" width="120" height="93"><h1>Calendar</h1><img class="logo" src="https://static.wixstatic.com/media/5df506_f9aea610ff0846b0b7c227760e09cf70~mv2.jpg/v1/fill/w_192,h_208,al_c,q_75/fist.jpg" alt="" width="96" height="104"></div><hr class="gold"><p class="lead">Monthly schedules, including holidays and special events.</p></div></section><div class="wrap narrow"><div class="filters"><a class="chip" href="#m0">September 2026</a><a class="chip" href="#m1">October 2026</a><a class="chip" href="#m2">November 2026</a><a class="chip" href="#m3">December 2026</a><a class="chip" href="#m4">January 2027</a><a class="chip" href="#m5">February 2027</a></div></div><section class="section" id="m0"><div class="wrap narrow"><div class="cal-frame"><img src="https://static.wixstatic.com/media/4f0023_6450845fdbd8415e931ef1b149b6e097~mv2.png/v1/fit/w_1200,h_2400,al_c,q_75/cal.png" alt="September 2026 class schedule" loading="eager"></div></div></section><section class="section" id="m1"><div class="wrap narrow"><div class="cal-frame"><img src="https://static.wixstatic.com/media/4f0023_8769817bfb934f51b31b68f3c8c1f17c~mv2.png/v1/fit/w_1200,h_2400,al_c,q_75/cal.png" alt="October 2026 class schedule" loading="lazy"></div></div></section><section class="section" id="m2"><div class="wrap narrow"><div class="cal-frame"><img src="https://static.wixstatic.com/media/4f0023_215559630d134b24b128a8478f29744a~mv2.png/v1/fit/w_1200,h_2400,al_c,q_75/cal.png" alt="November 2026 class schedule" loading="lazy"></div></div></section><section class="section" id="m3"><div class="wrap narrow"><div class="cal-frame"><img src="https://static.wixstatic.com/media/4f0023_7bedf86dde7e42568d2283137e82e6ec~mv2.png/v1/fit/w_1200,h_2400,al_c,q_75/cal.png" alt="December 2026 class schedule" loading="lazy"></div></div></section><section class="section" id="m4"><div class="wrap narrow"><div class="cal-frame"><img src="https://static.wixstatic.com/media/4f0023_d01ffc2c73a046e9aaf1ba264ec22f89~mv2.png/v1/fit/w_1200,h_2400,al_c,q_75/cal.png" alt="January 2027 class schedule" loading="lazy"></div></div></section><section class="section" id="m5"><div class="wrap narrow"><div class="cal-frame"><img src="https://static.wixstatic.com/media/4f0023_90a41f5587154c13b30d157c3951ef9f~mv2.png/v1/fit/w_1200,h_2400,al_c,q_75/cal.png" alt="February 2027 class schedule" loading="lazy"></div></div></section><section class="free" id="free-class"><div class="wrap">
+<section class="pagehead"><div class="wrap narrow"><div class="headrow"><img class="logo" src="https://static.wixstatic.com/media/5df506_41dbd700c0724e0cbffbe98cc6886d88~mv2.jpg/v1/fill/w_240,h_186,al_c,q_75/logo.jpg" alt="" width="120" height="93"><h1>Belt Tests</h1><img class="logo" src="https://static.wixstatic.com/media/5df506_f9aea610ff0846b0b7c227760e09cf70~mv2.jpg/v1/fill/w_192,h_208,al_c,q_75/fist.jpg" alt="" width="96" height="104"></div><hr class="gold"><p class="lead">Students: choose your belt and enter the password Sensei Eric gave you to open your written test.</p></div></section>
+<section class="section"><div class="wrap narrow">
+  <form class="test-box" id="test-form" novalidate>
+    <label for="belt">Your belt</label>
+    <select id="belt"><option value="">Choose your belt</option><option value="orange" data-file="assets/tests/orange.bin" data-iterations="600000">Orange Belt</option><option value="blue" data-file="assets/tests/blue.bin" data-iterations="600000">Blue Belt</option><option value="purple" data-file="assets/tests/purple.bin" data-iterations="600000">Purple Belt</option><option value="red" data-file="assets/tests/red.bin" data-iterations="600000">Red Belt</option><option value="brown" data-file="assets/tests/brown.bin" data-iterations="600000">Brown Belt</option></select>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="off" autocapitalize="none" spellcheck="false">
+    <label class="check"><input type="checkbox" id="showpw"> Show password</label>
+    <button class="btn red" type="submit">Open Test</button>
+    <p id="test-msg" role="status" aria-live="polite"></p>
+  </form>
+  <div id="test-result" class="test-result" hidden>
+    <h3></h3>
+    <div class="actions"><a class="btn red open" target="_blank" rel="noopener">Open in New Tab</a><a class="btn outline download">Download</a></div>
+    <iframe class="test-frame" title="Belt test"></iframe>
+  </div>
+  <p class="note">Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next belt.</p>
+</div></section><section class="free" id="free-class"><div class="wrap">
   <hr class="gold">
   <h2>Drop in for a Free Introductory Class</h2>
   <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=21001+San+Ramon+Valley+Blvd,+A7,+San+Ramon,+CA+94583" target="_blank" rel="noopener">21001 San Ramon Valley Blvd, A7, San Ramon, CA 94583</a></p>
@@ -40,6 +57,6 @@
   </div>
 </footer>
 <script src="js/main.js?v=0f379b3f"></script>
-
+<script src="js/tests.js?v=50308b82"></script>
 </body>
 </html>

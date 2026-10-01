@@ -1,0 +1,32 @@
+[
+ {
+  "id": "orange",
+  "label": "Orange Belt",
+  "file": "assets/tests/orange.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "blue",
+  "label": "Blue Belt",
+  "file": "assets/tests/blue.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "purple",
+  "label": "Purple Belt",
+  "file": "assets/tests/purple.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "red",
+  "label": "Red Belt",
+  "file": "assets/tests/red.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "brown",
+  "label": "Brown Belt",
+  "file": "assets/tests/brown.bin",
+  "iterations": 600000
+ }
+]

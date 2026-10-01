@@ -35,7 +35,7 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .brand .motto { display: block; font-size: 1.05rem; margin-top: 10px; }
 .nav { margin-top: 22px; border-top: 1px solid rgba(255, 255, 255, .55); }
 .nav ul { display: flex; justify-content: center; flex-wrap: wrap; gap: 0; list-style: none; margin: 0; padding: 0; }
-.nav a { display: block; padding: 14px 24px; text-decoration: none; font-size: 1.05rem; }
+.nav a { display: block; padding: 14px 15px; text-decoration: none; font-size: 1rem; }
 .nav a:hover { color: var(--gold); }
 .nav a[aria-current="page"] { color: var(--gold); }
 .nav-toggle { display: none; margin: 18px auto 0; background: none; border: 1px solid rgba(255, 255, 255, .55); color: inherit; padding: 8px 20px; font: inherit; cursor: pointer; }
@@ -187,3 +187,31 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .social a:hover { opacity: .8; }
 .social img { width: 40px; height: 40px; }
 .copy { font-size: .8rem; color: rgba(255, 255, 255, .5); }
+
+/* Gallery */
+.masonry { columns: 3 240px; column-gap: 12px; }
+.masonry button { display: block; width: 100%; margin: 0 0 12px; padding: 0; border: 0; background: var(--gray); cursor: zoom-in; break-inside: avoid; }
+.masonry img { width: 100%; height: auto; }
+
+/* Kata videos */
+.kata-list { list-style: none; padding: 0; margin: 0; }
+.kata-list li { border-bottom: 1px solid #ddd; }
+.kata-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; }
+.kata-name { font-size: 1.1rem; }
+.soon { font-size: .85rem; color: var(--muted); }
+.btn.small { min-width: 0; padding: 6px 18px; font-size: .95rem; }
+.kata-video { aspect-ratio: 16 / 9; width: 100%; border: 0; margin-bottom: 14px; }
+
+/* Belt tests */
+.test-box { display: grid; gap: 8px; max-width: 420px; margin: 0 auto; background: #fff; padding: 24px; box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
+.test-box label { font-weight: 600; font-size: .95rem; margin-top: 6px; }
+.test-box select, .test-box input[type="password"], .test-box input[type="text"] { font: 400 1.05rem var(--font); padding: 10px 12px; border: 1px solid #999; background: #fff; color: var(--text); width: 100%; }
+.test-box .check { display: flex; align-items: center; gap: 8px; font-weight: 400; margin-top: 0; }
+.test-box .btn { margin-top: 10px; min-width: 0; }
+.test-box .btn:disabled { opacity: .6; cursor: wait; }
+#test-msg { margin: 4px 0 0; min-height: 1.5em; font-size: .95rem; }
+#test-msg.error { color: var(--red-dark); }
+.test-result { margin-top: 32px; text-align: center; }
+.test-result h3 { font-family: var(--font-day); font-weight: 400; font-size: 1.8rem; color: #333; }
+.test-result .actions { margin: 0 0 18px; gap: 12px 24px; }
+.test-frame { width: 100%; height: 80vh; border: 1px solid #ccc; background: #fff; }

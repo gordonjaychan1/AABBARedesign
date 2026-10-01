@@ -136,6 +136,16 @@ CALENDAR = [
     ("February 2027", "4f0023_90a41f5587154c13b30d157c3951ef9f~mv2.png"),
 ]
 
+# Kata from the old Media page. Add a YouTube video ID as the second value to show a player.
+KATA = [(k, "") for k in [
+    "Kihon Kata Ichi", "Kihon Kata Ni", "Kihon Kata San", "Kihon Kata Yon", "Kihon Kata Go",
+    "Heian Shodan", "Heian Nidan", "Heian Sandan", "Heian Yodan", "Heian Godan", "Ten No Kata",
+    "Chino Kata", "Jiin", "Jion", "Jitte", "Matsukaze", "Bassai Dai", "Rohai", "Kosokun Dai",
+    "Seienchin", "Jyuroku", "Shinsei"]]
+
+# Belt tests locked by tools/encrypt_tests.py (no passwords in here)
+TESTS = json.loads((ROOT / "data" / "tests.json").read_text(encoding="utf-8"))
+
 ICONS = {
     "pin": '<svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
     "phone": '<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
@@ -145,7 +155,8 @@ ICONS = {
 # (output file, link href, menu label). Links omit .html; GitHub Pages serves classes.html at /classes.
 PAGES = [("index.html", "./", "Welcome"), ("instructors.html", "instructors", "Instructors"),
          ("classes.html", "classes", "Classes"), ("news.html", "news", "News & Updates"),
-         ("calendar.html", "calendar", "Calendar")]
+         ("gallery.html", "gallery", "Gallery"), ("kata.html", "kata", "Kata Videos"),
+         ("tests.html", "tests", "Belt Tests"), ("calendar.html", "calendar", "Calendar")]
 
 e = html.escape
 
@@ -334,9 +345,58 @@ def build_calendar():
     return page("calendar.html", "Calendar", body, "Monthly class calendar for All American Black Belt Academy.")
 
 
+def build_gallery():
+    photos = list(dict.fromkeys([c[3] for c in CLASSES] + list(DAY_PHOTOS.values()) + SLIDESHOW))
+    tiles = "".join(
+        f'<button data-full="{wix(m, 1600, name="full.jpg")}" aria-label="Enlarge photo {i + 1}"><img src="{wix(m, 480, name="photo.jpg")}" alt="" loading="lazy"></button>'
+        for i, m in enumerate(photos))
+    body = title_block("Gallery", "Photos from classes, tournaments, and events at the dojo.") + f"""
+<section class="section"><div class="wrap"><div class="masonry">{tiles}</div></div></section>
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged photo"><button class="x" aria-label="Close">&times;</button><img alt=""></div>""" + free_class()
+    return page("gallery.html", "Gallery", body, "Photos from classes, tournaments and events at All American Black Belt Academy.")
+
+
+def build_kata():
+    rows = []
+    for name, yt in KATA:
+        if yt:
+            action = f'<button class="btn red small" data-yt="{e(yt)}" aria-label="Watch {e(name)}">Watch</button>'
+        else:
+            action = '<span class="soon">Video coming soon</span>'
+        rows.append(f'<li><div class="kata-row"><span class="kata-name">{e(name)}</span>{action}</div></li>')
+    body = title_block("Kata Videos", "Practice videos for each kata in our curriculum.") + f"""
+<section class="section"><div class="wrap narrow"><ul class="kata-list">{"".join(rows)}</ul></div></section>""" + free_class()
+    return page("kata.html", "Kata Videos", body, "Kata practice videos from All American Black Belt Academy.")
+
+
+def build_tests():
+    options = "".join(f'<option value="{t["id"]}" data-file="{t["file"]}" data-iterations="{t["iterations"]}">{e(t["label"])}</option>' for t in TESTS)
+    body = title_block("Belt Tests", "Students: choose your belt and enter the password Sensei Eric gave you to open your written test.") + f"""
+<section class="section"><div class="wrap narrow">
+  <form class="test-box" id="test-form" novalidate>
+    <label for="belt">Your belt</label>
+    <select id="belt"><option value="">Choose your belt</option>{options}</select>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="off" autocapitalize="none" spellcheck="false">
+    <label class="check"><input type="checkbox" id="showpw"> Show password</label>
+    <button class="btn red" type="submit">Open Test</button>
+    <p id="test-msg" role="status" aria-live="polite"></p>
+  </form>
+  <div id="test-result" class="test-result" hidden>
+    <h3></h3>
+    <div class="actions"><a class="btn red open" target="_blank" rel="noopener">Open in New Tab</a><a class="btn outline download">Download</a></div>
+    <iframe class="test-frame" title="Belt test"></iframe>
+  </div>
+  <p class="note">Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next belt.</p>
+</div></section>""" + free_class()
+    return page("tests.html", "Belt Tests", body, "Written belt tests for students of All American Black Belt Academy.",
+                extra_body=f'<script src="js/tests.js?v={ver("js/tests.js")}"></script>')
+
+
 if __name__ == "__main__":
     for fn, builder in [("index.html", build_index), ("instructors.html", build_instructors),
                         ("classes.html", build_classes), ("news.html", build_news),
-                        ("calendar.html", build_calendar)]:
+                        ("gallery.html", build_gallery), ("kata.html", build_kata),
+                        ("tests.html", build_tests), ("calendar.html", build_calendar)]:
         (ROOT / fn).write_text(builder(), encoding="utf-8")
         print("wrote", fn)

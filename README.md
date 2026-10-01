@@ -37,3 +37,19 @@ python3 tools/build.py
 - Photos are still served from the academy's existing Wix CDN, resized on the fly. For a production site, export originals and host optimized copies (WebP/AVIF).
 - The Media page is left out of this redesign.
 - Content is copied from the current site as of 2026-09-29; verify before publishing.
+
+## Belt tests
+
+The Belt Tests page unlocks each belt's written test in the browser with that belt's password. The published files in `assets/tests/` are encrypted (AES-256 with a key derived from the password via PBKDF2), so the PDFs can't be read without the password even though the repo is public.
+
+Passwords and original PDFs live in `tests-private/`, which is git-ignored. **Never commit that folder.**
+
+1. Put each test PDF in `tests-private/sources/`.
+2. List the belts in `tests-private/belts.json`: `[{"id": "blue", "label": "Blue Belt", "pdf": "sources/blue.pdf", "password": "three-random-words"}]`
+3. Lock them and rebuild:
+
+```bash
+python3 tools/encrypt_tests.py && python3 tools/build.py
+```
+
+To change a password, edit it in `belts.json` and run step 3 again. `tools/make_sample_tests.py` creates placeholder tests with random passwords for demos.
