@@ -7,13 +7,12 @@ Reads tests-private/belts.json ([{id, label, pdf, password}]) and writes:
 
 Format of each .bin: b"AABBA1" | salt (16) | iv (16) | HMAC-SHA256 (32) | AES-256-CBC ciphertext.
 Keys come from PBKDF2-SHA256(password, salt); the first 32 bytes encrypt, the last 32 sign.
-js/tests.js reverses this in the browser. On both sides, passwords are lowercased with spaces and hyphens removed.
+js/tests.js reverses this in the browser. Passwords must match exactly, including capitals, spaces and hyphens.
 """
 import hashlib
 import hmac
 import json
 import os
-import re
 import pathlib
 import subprocess
 
@@ -24,7 +23,7 @@ ITERATIONS = 600_000
 
 
 def normalize(pw):
-    return re.sub(r"[\s-]+", "", pw).lower()
+    return pw  # exact match; kept as one place to change the rule (js/tests.js must match)
 
 
 def encrypt(data, password):

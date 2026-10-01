@@ -22,7 +22,7 @@
     var data = new Uint8Array(await res.arrayBuffer());
     if (new TextDecoder().decode(data.slice(0, 6)) !== MAGIC) throw new Error('format');
     var salt = data.slice(6, 22), iv = data.slice(22, 38), tag = data.slice(38, 70), ct = data.slice(70);
-    var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password.replace(/[\s-]+/g, '').toLowerCase()), 'PBKDF2', false, ['deriveBits']);
+    var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
     var bits = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: salt, iterations: iterations, hash: 'SHA-256' }, base, 512));
     var macKey = await crypto.subtle.importKey('raw', bits.slice(32), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
     var ok = await crypto.subtle.verify('HMAC', macKey, tag, concat(data.slice(0, 38), ct));  // signed: magic + salt + iv + ciphertext
