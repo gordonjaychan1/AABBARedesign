@@ -2,7 +2,9 @@
 """Creates placeholder belt-test PDFs and a password for each, for demoing the Belt Tests page.
 
 Writes tests-private/ (git-ignored): sources/<belt>.pdf and belts.json.
-Replace the PDFs with the real tests and the passwords with Sensei Eric's, then run tools/encrypt_tests.py.
+Also writes data/demo-passwords.json, which is published so people can try the demo.
+Before launch: delete data/demo-passwords.json, replace the PDFs with the real tests and the
+passwords with Sensei Eric's, then run tools/encrypt_tests.py.
 """
 import json
 import pathlib
@@ -63,4 +65,6 @@ if __name__ == "__main__":
         ]))
         belts.append({"id": bid, "label": label, "pdf": f"sources/{bid}.pdf", "password": password()})
     (PRIVATE / "belts.json").write_text(json.dumps(belts, indent=1))
+    demo = [{"id": b["id"], "label": b["label"], "password": b["password"]} for b in belts]
+    (ROOT / "data" / "demo-passwords.json").write_text(json.dumps(demo, indent=1))
     print(f"wrote {len(belts)} sample tests and passwords to {PRIVATE.relative_to(ROOT)}/")

@@ -164,6 +164,9 @@ KATA = [
 
 # Belt tests locked by tools/encrypt_tests.py (no passwords in here)
 TESTS = json.loads((ROOT / "data" / "tests.json").read_text(encoding="utf-8"))
+# Sample passwords shown on the page for trying the demo. Delete this file before real tests go up.
+DEMO_FILE = ROOT / "data" / "demo-passwords.json"
+DEMO_PASSWORDS = json.loads(DEMO_FILE.read_text(encoding="utf-8")) if DEMO_FILE.exists() else []
 
 ICONS = {
     "pin": '<svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
@@ -389,6 +392,16 @@ def build_kata():
 
 def build_tests():
     options = "".join(f'<option value="{t["id"]}" data-file="{t["file"]}" data-iterations="{t["iterations"]}">{e(t["label"])}</option>' for t in TESTS)
+    demo = ""
+    if DEMO_PASSWORDS:
+        rows = "".join(f'<tr><td>{e(d["label"])}</td><td><code>{e(d["password"])}</code></td>'
+                       f'<td><button type="button" class="chip" data-demo-belt="{e(d["id"])}" data-demo-pw="{e(d["password"])}">Try it</button></td></tr>'
+                       for d in DEMO_PASSWORDS)
+        demo = f"""<div class="demo-box">
+    <h3>Demo passwords</h3>
+    <p>These open the <b>sample</b> tests so you can try the page. They&rsquo;ll be replaced with real tests and new passwords before launch.</p>
+    <table><thead><tr><th>Rank</th><th>Password</th><th></th></tr></thead><tbody>{rows}</tbody></table>
+  </div>"""
     body = title_block("Belt Tests", "Students: choose your rank and enter the password Sensei Eric gave you to open your written test.") + f"""
 <section class="section"><div class="wrap narrow">
   <form class="test-box" id="test-form" novalidate>
@@ -406,6 +419,7 @@ def build_tests():
     <iframe class="test-frame" title="Belt test"></iframe>
   </div>
   <p class="note">Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next rank.</p>
+  {demo}
 </div></section>""" + free_class()
     return page("tests.html", "Belt Tests", body, "Written belt tests for students of All American Black Belt Academy.",
                 extra_body=f'<script src="js/tests.js?v={ver("js/tests.js")}"></script>')
