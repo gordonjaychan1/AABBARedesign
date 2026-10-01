@@ -11,8 +11,9 @@ import secrets
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PRIVATE = ROOT / "tests-private"
 
-BELTS = [("orange", "Orange Belt"), ("blue", "Blue Belt"), ("purple", "Purple Belt"),
-         ("red", "Red Belt"), ("brown", "Brown Belt")]
+BELTS = [(f"kyu{n}", f"{n}{suffix} Kyu") for n, suffix in
+         [(9, "th"), (8, "th"), (7, "th"), (6, "th"), (5, "th"), (4, "th"), (3, "rd"), (2, "nd"), (1, "st")]]
+BELTS += [("shodan-ho", "Shodan-Ho"), ("shodan", "Shodan")]
 
 WORDS = ("maple river tiger cedar falcon harbor lantern meadow pebble summit thunder willow "
          "anchor bamboo canyon dragon ember forest glacier island jasmine kettle lotus marble "

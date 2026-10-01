@@ -45,7 +45,7 @@ The Belt Tests page unlocks each belt's written test in the browser with that be
 Passwords and original PDFs live in `tests-private/`, which is git-ignored. **Never commit that folder.**
 
 1. Put each test PDF in `tests-private/sources/`.
-2. List the belts in `tests-private/belts.json`: `[{"id": "blue", "label": "Blue Belt", "pdf": "sources/blue.pdf", "password": "three-random-words"}]`
+2. List the belts in `tests-private/belts.json`: `[{"id": "kyu9", "label": "9th Kyu", "pdf": "sources/kyu9.pdf", "password": "three-random-words"}]`
 3. Lock them and rebuild:
 
 ```bash

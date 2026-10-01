@@ -1,32 +1,68 @@
 [
  {
-  "id": "orange",
-  "label": "Orange Belt",
-  "file": "assets/tests/orange.bin",
+  "id": "kyu9",
+  "label": "9th Kyu",
+  "file": "assets/tests/kyu9.bin",
   "iterations": 600000
  },
  {
-  "id": "blue",
-  "label": "Blue Belt",
-  "file": "assets/tests/blue.bin",
+  "id": "kyu8",
+  "label": "8th Kyu",
+  "file": "assets/tests/kyu8.bin",
   "iterations": 600000
  },
  {
-  "id": "purple",
-  "label": "Purple Belt",
-  "file": "assets/tests/purple.bin",
+  "id": "kyu7",
+  "label": "7th Kyu",
+  "file": "assets/tests/kyu7.bin",
   "iterations": 600000
  },
  {
-  "id": "red",
-  "label": "Red Belt",
-  "file": "assets/tests/red.bin",
+  "id": "kyu6",
+  "label": "6th Kyu",
+  "file": "assets/tests/kyu6.bin",
   "iterations": 600000
  },
  {
-  "id": "brown",
-  "label": "Brown Belt",
-  "file": "assets/tests/brown.bin",
+  "id": "kyu5",
+  "label": "5th Kyu",
+  "file": "assets/tests/kyu5.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "kyu4",
+  "label": "4th Kyu",
+  "file": "assets/tests/kyu4.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "kyu3",
+  "label": "3rd Kyu",
+  "file": "assets/tests/kyu3.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "kyu2",
+  "label": "2nd Kyu",
+  "file": "assets/tests/kyu2.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "kyu1",
+  "label": "1st Kyu",
+  "file": "assets/tests/kyu1.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "shodan-ho",
+  "label": "Shodan-Ho",
+  "file": "assets/tests/shodan-ho.bin",
+  "iterations": 600000
+ },
+ {
+  "id": "shodan",
+  "label": "Shodan",
+  "file": "assets/tests/shodan.bin",
   "iterations": 600000
  }
 ]

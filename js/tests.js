@@ -40,7 +40,7 @@
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     var opt = beltSel.options[beltSel.selectedIndex];
-    if (!opt.value) { say('Choose your belt first.', true); beltSel.focus(); return; }
+    if (!opt.value) { say('Choose your rank first.', true); beltSel.focus(); return; }
     if (!pwInput.value.trim()) { say('Enter the password Sensei gave you.', true); pwInput.focus(); return; }
     if (!window.crypto || !crypto.subtle) { say('This browser can\'t open the tests. Try Chrome or Safari.', true); return; }
     button.disabled = true;

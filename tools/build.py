@@ -371,11 +371,11 @@ def build_kata():
 
 def build_tests():
     options = "".join(f'<option value="{t["id"]}" data-file="{t["file"]}" data-iterations="{t["iterations"]}">{e(t["label"])}</option>' for t in TESTS)
-    body = title_block("Belt Tests", "Students: choose your belt and enter the password Sensei Eric gave you to open your written test.") + f"""
+    body = title_block("Belt Tests", "Students: choose your rank and enter the password Sensei Eric gave you to open your written test.") + f"""
 <section class="section"><div class="wrap narrow">
   <form class="test-box" id="test-form" novalidate>
-    <label for="belt">Your belt</label>
-    <select id="belt"><option value="">Choose your belt</option>{options}</select>
+    <label for="belt">Kyu Ranking</label>
+    <select id="belt"><option value="">Choose your rank</option>{options}</select>
     <label for="pw">Password</label>
     <input id="pw" type="password" autocomplete="off" autocapitalize="none" spellcheck="false">
     <label class="check"><input type="checkbox" id="showpw"> Show password</label>
@@ -387,7 +387,7 @@ def build_tests():
     <div class="actions"><a class="btn red open" target="_blank" rel="noopener">Open in New Tab</a><a class="btn outline download">Download</a></div>
     <iframe class="test-frame" title="Belt test"></iframe>
   </div>
-  <p class="note">Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next belt.</p>
+  <p class="note">Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next rank.</p>
 </div></section>""" + free_class()
     return page("tests.html", "Belt Tests", body, "Written belt tests for students of All American Black Belt Academy.",
                 extra_body=f'<script src="js/tests.js?v={ver("js/tests.js")}"></script>')
