@@ -166,6 +166,21 @@ KATA = [
     ("Shinsei", "4f0023_70ddea88bf344d5f8a599caa16fb95d3"),
 ]
 
+# Kata already moved to the dojo's YouTube channel ("Kata" playlist): kata name -> YouTube video id.
+# The rest still play from Wix until they're uploaded.
+KATA_YOUTUBE = {
+    "Heian Shodan": "PrmGEsXkJmc",
+    "Heian Nidan": "jxKHLNqhl40",
+    "Heian Sandan": "xPFuvq4DTHI",
+    "Heian Yodan": "g_K2PqzpjeU",
+    "Heian Godan": "c3EN2DEOlEw",
+    "Chino Kata": "QyJeE-g6YhI",
+    "Jiin": "MIKce5cxA_A",
+    "Jion": "A3ghYOwKGpc",
+    "Jitte": "uUVrwS0DeV8",
+    "Bassai Dai": "RCMcTkZTwSw",
+}
+
 # Belt tests locked by tools/encrypt_tests.py (no passwords in here)
 TESTS = json.loads((ROOT / "data" / "tests.json").read_text(encoding="utf-8"))
 
@@ -382,9 +397,13 @@ def build_kata():
     cards = []
     for name, vid in KATA:
         poster = photo(f"{vid}f000.jpg", 640)
-        src = f"https://video.wixstatic.com/video/{vid}/720p/mp4/file.mp4"  # still on Wix until moved to YouTube; loads only when played
-        cards.append(f'<article class="daycard kata-card"><h3>{e(name)}</h3>'
-                     f'<video controls preload="none" playsinline poster="{poster}" src="{src}" aria-label="{e(name)} kata video"></video></article>')
+        if name in KATA_YOUTUBE:  # YouTube player loads only when someone presses play
+            player = (f'<button class="yt-play" data-yt="{KATA_YOUTUBE[name]}" aria-label="Play {e(name)} kata video">'
+                      f'<img src="{poster}" alt="" loading="lazy" width="640" height="360"></button>')
+        else:  # still on Wix until uploaded to YouTube; loads only when played
+            src = f"https://video.wixstatic.com/video/{vid}/720p/mp4/file.mp4"
+            player = f'<video controls preload="none" playsinline poster="{poster}" src="{src}" aria-label="{e(name)} kata video"></video>'
+        cards.append(f'<article class="daycard kata-card"><h3>{e(name)}</h3>{player}</article>')
     body = title_block("Kata Videos", "Practice videos for each kata in our curriculum.") + f"""
 <section class="section"><div class="wrap"><div class="daygrid">{"".join(cards)}</div></div></section>""" + free_class()
     return page("kata.html", "Kata Videos", body, "Kata practice videos from All American Black Belt Academy.")
