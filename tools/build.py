@@ -22,11 +22,15 @@ SOCIAL = [
 ]
 
 
-def wix(media_id, w, h=None, name="photo.jpg"):
-    """Wix CDN resize URL, so each image is served at the size it is shown."""
-    mode = "fill" if h else "fit"
-    size = f"w_{w},h_{h or w * 2}"  # fit needs both bounds; the tall box leaves width as the limit
-    return f"https://static.wixstatic.com/media/{media_id}/v1/{mode}/{size},al_c,q_75/{name}"
+# The site's own copies of the photos that used to live on Wix (made by tools/make_web_images.py),
+# keyed by the old Wix media id so the data below can keep referring to photos the same way.
+MEDIA = json.loads((ROOT / "data" / "media.json").read_text(encoding="utf-8"))
+
+
+def photo(media_id, w, h=None, name=None):
+    """Path to a photo, using the small copy when it's shown 720px wide or less. CSS handles any cropping."""
+    f = MEDIA[media_id]
+    return f"assets/img/sm/{f}" if w <= 720 else f"assets/img/{f}"
 
 
 HERO = "82efacf67509447eb89b898a3ff6e3cd.jpg"  # belts photo used behind the intro text on the old site
@@ -195,9 +199,9 @@ def day_cards():
         rows.sort(key=lambda r: (int(r[0].split(":")[0]) % 12 + (12 if "PM" in r[0] else 0), r[0]))
         lis = "".join(f"<li><b>{t}</b> {e(n)}{f' <span>({e(b)})</span>' if b else ''}</li>" for t, n, b in rows)
         cards.append(f'<article class="daycard"><h3>{full}</h3><ul>{lis}</ul>'
-                     f'<img src="{wix(DAY_PHOTOS[a], 480, 330, a + ".jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
+                     f'<img src="{photo(DAY_PHOTOS[a], 480, 330, a + ".jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
     cards.append(f'<article class="daycard"><h3>Saturday</h3><ul><li><b>10:00 AM &ndash; 2:00 PM</b> Reserved for Promotions / Seminars / Private Lessons</li></ul>'
-                 f'<img src="{wix(DAY_PHOTOS["Sat"], 480, 330, "Sat.jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
+                 f'<img src="{photo(DAY_PHOTOS["Sat"], 480, 330, "Sat.jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
     return '<div class="daygrid">' + "".join(cards) + "</div>"
 
 
@@ -221,7 +225,7 @@ def page(fname, title, body, description, extra_body=""):
     cur = ' aria-current="page"'
     nav = "".join(f'<li><a href="{h}"{cur if f == fname else ""}>{e(t)}</a></li>' for f, h, t in PAGES)
     social = "".join(f'<a href="{u}" target="_blank" rel="noopener" aria-label="{n}" title="{n}">'
-                     f'<img src="{wix(icon, 80, 80, n.lower() + ".png")}" alt="" width="40" height="40"></a>' for n, u, icon in SOCIAL)
+                     f'<img src="{photo(icon, 80, 80, n.lower() + ".png")}" alt="" width="40" height="40"></a>' for n, u, icon in SOCIAL)
     full_title = "Dojo | " + NAME + " | San Ramon" if fname == "index.html" else f"{title} | {NAME}"
     return f"""<!doctype html>
 <html lang="en">
@@ -232,7 +236,6 @@ def page(fname, title, body, description, extra_body=""):
 <meta name="description" content="{e(description)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css?v={ver('css/styles.css')}">
 </head>
@@ -264,15 +267,15 @@ def page(fname, title, body, description, extra_body=""):
 
 
 def title_block(h1, lead="", anchor=""):
-    logos = f'<img class="logo" src="{wix(LOGO_FLAG, 240, 186, "logo.jpg")}" alt="" width="120" height="93">'
-    fist = f'<img class="logo" src="{wix(LOGO_FIST, 192, 208, "fist.jpg")}" alt="" width="96" height="104">'
+    logos = f'<img class="logo" src="{photo(LOGO_FLAG, 240, 186, "logo.jpg")}" alt="" width="120" height="93">'
+    fist = f'<img class="logo" src="{photo(LOGO_FIST, 192, 208, "fist.jpg")}" alt="" width="96" height="104">'
     return f"""<section class="pagehead"{f' id="{anchor}"' if anchor else ''}><div class="wrap narrow"><div class="headrow">{logos}<h1>{h1}</h1>{fist}</div><hr class="gold">{f'<p class="lead">{lead}</p>' if lead else ''}</div></section>"""
 
 
 def build_index():
     bio = "".join(f"<li>{e(t)}</li>" for t in SHIHAN)
     body = f"""<section class="hero">
-  <img class="hero-bg" src="{wix(HERO, 1600, 700, 'belts.jpg')}" alt="" fetchpriority="high">
+  <img class="hero-bg" src="{photo(HERO, 1600, 700, 'belts.jpg')}" alt="" fetchpriority="high">
   <div class="wrap"><div class="panel">
     <p>The All American Black Belt Academy believes in and teaches Martial arts with traditional values of respect, self-discipline, humility and dedication to excellence.</p>
     <p>AABBA is well known for its high-level instruction and world-class athletes, but most notably, for its holistic methods to teach skills with an emphasis on health and fitness wellness.</p>
@@ -295,7 +298,7 @@ def build_instructors():
     cards = []
     for role, name, img, items in INSTRUCTORS:
         lis = "".join(f"<li>{e(x)}</li>" for x in items)
-        cards.append(f"""<article class="person"><img src="{wix(img, 480, name=name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="lazy" width="480" height="480">
+        cards.append(f"""<article class="person"><img src="{photo(img, 480, name=name.lower().replace(' ', '-') + '.jpg')}" alt="{name}" loading="lazy" width="480" height="480">
 <div><h3>{role} {name}</h3><ul>{lis}</ul></div></article>""")
     body = title_block("Instructors") + f'<section class="section"><div class="wrap narrow"><div class="people">{"".join(cards)}</div></div></section>' + free_class()
     return page("instructors.html", "Instructors", body, "Meet the black belt instructors at All American Black Belt Academy.")
@@ -303,15 +306,15 @@ def build_instructors():
 
 def build_classes():
     cards = []
-    for name, belts, sched, photo in CLASSES:
+    for name, belts, sched, pic in CLASSES:
         rows = "".join(f'<li><b>{full}</b><span>{"<br>".join(sched[a])}</span></li>' for a, full in DAYS if a in sched)
         sub = f'<p class="belts">{e(belts)}</p>' if belts else ""
-        cards.append(f'<article class="daycard classcard"><img src="{wix(photo, 540, 510, "class.jpg")}" alt="" loading="lazy" width="540" height="510">'
+        cards.append(f'<article class="daycard classcard"><img src="{photo(pic, 540, 510, "class.jpg")}" alt="" loading="lazy" width="540" height="510">'
                      f'<h3>{e(name)}</h3>{sub}<ul class="times">{rows}</ul></article>')
     n = len(SLIDESHOW)
     slides = "".join(
         f'<div class="slide" role="group" aria-roledescription="slide" aria-label="Photo {i + 1} of {n}">'
-        f'<img src="{wix(m, 1800, 720, "slide.jpg")}" alt="" loading="{"eager" if i == 0 else "lazy"}" width="1800" height="720"></div>'
+        f'<img src="{photo(m, 1800, 720, "slide.jpg")}" alt="" loading="{"eager" if i == 0 else "lazy"}" width="1800" height="720"></div>'
         for i, m in enumerate(SLIDESHOW))
     body = title_block("Classes and Courses", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars, and private lessons.") + f"""
 <section class="section">
@@ -340,10 +343,10 @@ def build_news():
             d, c = it["date"], it["category"]
             dt = datetime.date.fromisoformat(d)
             text = "".join(f"<p>{e(t)}</p>" for t in it["text"])
-            photo = (f'<button class="news-photo" data-full="{wix(it["photo"], 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(it["title"])}">'
-                     f'<img src="{wix(it["photo"], 480, 354, "news.jpg")}" alt="" loading="lazy" width="480" height="354"></button>')
+            pic = (f'<button class="news-photo" data-full="{photo(it["photo"], 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(it["title"])}">'
+                     f'<img src="{photo(it["photo"], 480, 354, "news.jpg")}" alt="" loading="lazy" width="480" height="354"></button>')
             rows.append(f"""<li class="news-item" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
-<div class="news-body"><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div>{photo}</li>""")
+<div class="news-body"><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div>{pic}</li>""")
         groups.append(f'<section class="year-group"><h2>{y}</h2><ul class="news-list">{"".join(rows)}</ul></section>')
     body = title_block("News &amp; Updates", "Tournament results, promotions, and training events.") + f"""
 <section class="section"><div class="wrap narrow">
@@ -357,7 +360,7 @@ def build_news():
 def build_calendar():
     jump = "".join(f'<a class="chip" href="#m{i}">{n}</a>' for i, (n, m) in enumerate(CALENDAR))
     tabs = "".join(
-        f'<section class="section" id="m{i}"><div class="wrap narrow"><div class="cal-frame"><img src="{wix(m, 1200, name="cal.png")}" alt="{n} class schedule" loading="{"eager" if i == 0 else "lazy"}"></div></div></section>'
+        f'<section class="section" id="m{i}"><div class="wrap narrow"><div class="cal-frame"><img src="{photo(m, 1200, name="cal.png")}" alt="{n} class schedule" loading="{"eager" if i == 0 else "lazy"}"></div></div></section>'
         for i, (n, m) in enumerate(CALENDAR))
     body = title_block("Calendar", "Monthly schedules, including holidays and special events.") + \
         f'<div class="wrap narrow"><div class="filters">{jump}</div></div>' + tabs + free_class()
@@ -367,7 +370,7 @@ def build_calendar():
 def build_gallery():
     photos = list(dict.fromkeys([c[3] for c in CLASSES] + list(DAY_PHOTOS.values()) + SLIDESHOW))
     tiles = "".join(
-        f'<button data-full="{wix(m, 1600, name="full.jpg")}" aria-label="Enlarge photo {i + 1}"><img src="{wix(m, 480, name="photo.jpg")}" alt="" loading="lazy"></button>'
+        f'<button data-full="{photo(m, 1600, name="full.jpg")}" aria-label="Enlarge photo {i + 1}"><img src="{photo(m, 480, name="photo.jpg")}" alt="" loading="lazy"></button>'
         for i, m in enumerate(photos))
     body = title_block("Gallery", "Photos from classes, tournaments, and events at the dojo.") + f"""
 <section class="section"><div class="wrap"><div class="masonry">{tiles}</div></div></section>
@@ -378,8 +381,8 @@ def build_gallery():
 def build_kata():
     cards = []
     for name, vid in KATA:
-        poster = f"https://static.wixstatic.com/media/{vid}f000.jpg/v1/fill/w_640,h_360,al_c,q_75/poster.jpg"
-        src = f"https://video.wixstatic.com/video/{vid}/720p/mp4/file.mp4"  # downloads only when played
+        poster = photo(f"{vid}f000.jpg", 640)
+        src = f"https://video.wixstatic.com/video/{vid}/720p/mp4/file.mp4"  # still on Wix until moved to YouTube; loads only when played
         cards.append(f'<article class="daycard kata-card"><h3>{e(name)}</h3>'
                      f'<video controls preload="none" playsinline poster="{poster}" src="{src}" aria-label="{e(name)} kata video"></video></article>')
     body = title_block("Kata Videos", "Practice videos for each kata in our curriculum.") + f"""

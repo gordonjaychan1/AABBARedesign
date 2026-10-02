@@ -34,7 +34,8 @@ python3 tools/build.py
 
 ## Notes
 
-- Photos are still served from the academy's existing Wix CDN, resized on the fly. For a production site, export originals and host optimized copies (WebP/AVIF).
+- Photos are the site's own copies in `assets/img/` (large) and `assets/img/sm/` (small), made from the originals downloaded from Wix. To redo them: `python3 tools/make_web_images.py "<folder of originals>"`. `tools/media_manifest.py` lists every photo and video and its file name.
+- The kata videos still play from Wix until they're moved to a YouTube channel for the dojo.
 - The Media page is left out of this redesign.
 - Content is copied from the current site as of 2026-09-29; verify before publishing.
 
