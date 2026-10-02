@@ -268,7 +268,7 @@ def page(fname, title, body, description, extra_body=""):
 </main>
 <footer class="site-footer">
   <div class="wrap">
-    <p>Affiliated with <a href="http://hayashiha.jp/english/news/index.html" target="_blank" rel="noopener">Japan Karatedo Hayashi-ha Shitoryukai</a>, <a href="http://www.usankf.org/" target="_blank" rel="noopener">USA NKF</a> and <a href="http://www.wkf.net" target="_blank" rel="noopener">WKF</a>.
+    <p>Affiliated with <a href="http://hayashiha.jp/english/news/index.html" target="_blank" rel="noopener">Japan Karatedo Hayashi-ha Shitoryukai</a>, <a href="http://www.usankf.org/" target="_blank" rel="noopener">USA NKF</a> and <a href="http://www.wkf.net" target="_blank" rel="noopener">WKF</a>.<br>
     Instruction is also offered through the San Ramon and Pleasant Hill community centers by Sensei Johanna Abello (3rd degree black belt) and William Fuentes (5th degree black belt).</p>
     <div class="social">{social}</div>
     <p class="copy">&copy; {datetime.date.today().year} {NAME} &middot; {e(ADDRESS)}</p>
