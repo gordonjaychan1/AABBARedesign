@@ -152,7 +152,7 @@ KATA = [
     ("Heian Sandan", "4f0023_226cf34adf7f432b80c1f4b5d1e3e24b"),
     ("Heian Yondan", "4f0023_f15a6fb2e85b463cbe5ce4e135ad2235"),
     ("Heian Godan", "4f0023_77aa5297453a4976a44504e5dd748e3b"),
-    ("Ten No Kata", "4f0023_e9e720598b23414bb84d9857f56a2ede"),
+    ("Ten no Kata", "4f0023_e9e720598b23414bb84d9857f56a2ede"),
     ("Chi no Kata", "4f0023_31b3730e81554364aac77c356e64d46e"),
     ("Jiin", "4f0023_6be42964115142e5840d6d06f27594ea"),
     ("Jion", "4f0023_957acb61f7954498911661f463a9b57a"),
