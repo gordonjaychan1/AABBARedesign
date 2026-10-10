@@ -166,19 +166,31 @@ KATA = [
     ("Shinsei", "4f0023_70ddea88bf344d5f8a599caa16fb95d3"),
 ]
 
-# Kata already moved to the dojo's YouTube channel ("Kata" playlist): kata name -> YouTube video id.
-# The rest still play from Wix until they're uploaded.
+# Kata videos on the dojo's YouTube channel ("Kata" playlist): kata name -> YouTube video id.
+# A kata missing from here falls back to its old Wix video.
 KATA_YOUTUBE = {
+    "Kihon Kata Ichi": "emag20Df2q0",
+    "Kihon Kata Ni": "YUifkmrPfv0",
+    "Kihon Kata San": "h3SjyrznjP0",
+    "Kihon Kata Yon": "6fKg0ccGcI4",
+    "Kihon Kata Go": "9VUS_Kzqcp8",
     "Heian Shodan": "PrmGEsXkJmc",
     "Heian Nidan": "jxKHLNqhl40",
     "Heian Sandan": "xPFuvq4DTHI",
     "Heian Yondan": "g_K2PqzpjeU",
     "Heian Godan": "c3EN2DEOlEw",
+    "Ten no Kata": "z2Wqg3W_19E",
     "Chi no Kata": "QyJeE-g6YhI",
     "Jiin": "MIKce5cxA_A",
     "Jion": "A3ghYOwKGpc",
     "Jitte": "uUVrwS0DeV8",
+    "Matsukaze": "QtDR8F9iHNk",
     "Bassai Dai": "RCMcTkZTwSw",
+    "Rohai": "YihTSHaHvB8",
+    "Kosokun Dai": "IDjW-dTEpeY",
+    "Seienchin": "JYm9Vc5PiDw",
+    "Jyuroku": "TWgQ28xb3ZE",
+    "Shinsei": "4sPzTIzwS5Q",
 }
 
 # Belt tests locked by tools/encrypt_tests.py (no passwords in here)
