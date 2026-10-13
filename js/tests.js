@@ -8,10 +8,7 @@
   var button = form.querySelector('button[type="submit"]');
   var msg = document.getElementById('test-msg');
   var result = document.getElementById('test-result');
-  var tabs = result.querySelector('.doc-tabs');
-  var frame = result.querySelector('iframe');
-  var openLink = result.querySelector('.open');
-  var dlLink = result.querySelector('.download');
+  var list = result.querySelector('.test-docs');
   var MAGIC = 'AABBA1';
   var docs = [];
 
@@ -52,14 +49,28 @@
     return crypto.subtle.decrypt({ name: 'AES-CBC', iv: iv }, keys.aes, ct);
   }
 
-  function show(i) {
-    var d = docs[i];
-    frame.src = d.url;
-    frame.title = d.label;
-    openLink.href = d.url;
-    dlLink.href = d.url;
-    dlLink.download = d.name;
-    tabs.querySelectorAll('.chip').forEach(function (c, n) { c.setAttribute('aria-pressed', n === i); });
+  // One section per document: title, open/download buttons, and the document itself
+  function render() {
+    list.innerHTML = '';
+    docs.forEach(function (d) {
+      var sec = document.createElement('section');
+      sec.className = 'test-doc';
+      var h = document.createElement('h4');
+      h.textContent = d.label;
+      var actions = document.createElement('div');
+      actions.className = 'actions';
+      var open = document.createElement('a');
+      open.className = 'btn red'; open.href = d.url; open.target = '_blank'; open.rel = 'noopener';
+      open.textContent = 'Open in New Tab';
+      var dl = document.createElement('a');
+      dl.className = 'btn outline'; dl.href = d.url; dl.download = d.name;
+      dl.textContent = 'Download';
+      actions.append(open, dl);
+      var frame = document.createElement('iframe');
+      frame.className = 'test-frame'; frame.title = d.label; frame.src = d.url;
+      sec.append(h, actions, frame);
+      list.appendChild(sec);
+    });
   }
 
   form.addEventListener('submit', async function (e) {
@@ -84,14 +95,7 @@
       docs.forEach(function (d) { URL.revokeObjectURL(d.url); });
       docs = unlocked;
       result.querySelector('h3').textContent = opt.text;
-      tabs.innerHTML = '';
-      docs.forEach(function (d, n) {
-        var b = document.createElement('button');
-        b.type = 'button'; b.className = 'chip'; b.textContent = d.label;
-        b.addEventListener('click', function () { show(n); });
-        tabs.appendChild(b);
-      });
-      show(0);
+      render();
       result.hidden = false;
       say('Unlocked!');
       pwInput.value = '';

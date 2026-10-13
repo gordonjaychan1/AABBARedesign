@@ -437,9 +437,7 @@ def build_tests():
   </form>
   <div id="test-result" class="test-result" hidden>
     <h3></h3>
-    <div class="filters doc-tabs" role="group" aria-label="Documents"></div>
-    <div class="actions"><a class="btn red open" target="_blank" rel="noopener">Open in New Tab</a><a class="btn outline download">Download</a></div>
-    <iframe class="test-frame" title="Belt document"></iframe>
+    <div class="test-docs"></div>
   </div>
   <p class="note">Stripe ranks have requirements only, with no written test. Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next rank.</p>
 </div></section>""" + free_class()

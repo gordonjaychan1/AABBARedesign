@@ -212,6 +212,7 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .test-result { margin-top: 32px; text-align: center; }
 .test-result h3 { font-family: var(--font-day); font-weight: 400; font-size: 1.8rem; color: #333; }
 .test-result .actions { margin: 0 0 18px; gap: 12px 24px; }
-.doc-tabs { margin-bottom: 16px; }
-.doc-tabs:empty { display: none; }
-.test-frame { width: 100%; height: 80vh; border: 1px solid #ccc; background: #fff; }
+.test-doc { margin-top: 28px; }
+.test-doc + .test-doc { padding-top: 28px; border-top: 2px solid var(--gold); }
+.test-doc h4 { font-family: var(--font-day); font-weight: 400; font-size: 1.4rem; letter-spacing: .03em; color: #333; margin: 0 0 12px; }
+.test-frame { width: 100%; height: 75vh; border: 1px solid #ccc; background: #fff; }
