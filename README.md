@@ -41,16 +41,20 @@ python3 tools/build.py
 
 ## Belt tests
 
-The Belt Tests page unlocks each belt's written test in the browser with that belt's password. The published files in `assets/tests/` are encrypted (AES-256 with a key derived from the password via PBKDF2), so the PDFs can't be read without the password even though the repo is public.
+Each rank on the Belt Tests page has its own password, which unlocks that rank's written test and/or requirements sheet in the browser. The published files in `assets/tests/` are encrypted (AES-256 with a key derived from the password via PBKDF2), so they can't be read without the password even though the repo is public.
 
 Passwords and original PDFs live in `tests-private/`, which is git-ignored. **Never commit that folder.**
 
-1. Put each test PDF in `tests-private/sources/`.
-2. List the belts in `tests-private/belts.json`: `[{"id": "kyu9", "label": "9th Kyu", "pdf": "sources/kyu9.pdf", "password": "three-random-words"}]`
+1. Convert the Word documents to PDF (macOS):
+   ```bash
+   textutil -convert html "Some Doc.docx" -output tests-private/html/kyu8-test.html
+   osascript -l JavaScript tools/html_to_pdf.js tests-private/html/kyu8-test.html tests-private/sources/kyu8-test.pdf
+   ```
+2. List the ranks in `tests-private/belts.json`:
+   `[{"id": "kyu8", "label": "8th Kyu – Blue Belt", "password": "...", "files": [{"kind": "test", "label": "Written Test", "pdf": "sources/kyu8-test.pdf"}, {"kind": "requirements", "label": "Requirements", "pdf": "sources/kyu8-requirements.pdf"}]}]`
 3. Lock them and rebuild:
+   ```bash
+   python3 tools/encrypt_tests.py && python3 tools/build.py
+   ```
 
-```bash
-python3 tools/encrypt_tests.py && python3 tools/build.py
-```
-
-To change a password, edit it in `belts.json` and run step 3 again. `tools/make_sample_tests.py` creates placeholder tests for demos; each sample password is the rank plus "password" (for example `9kyupassword`, `shodanhopassword`). Passwords must match exactly, including capitals, spaces and hyphens.
+To change a password, edit it in `belts.json` and run step 3 again. Passwords must match exactly, including capitals.

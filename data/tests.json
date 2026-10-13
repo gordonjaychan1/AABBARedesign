@@ -1,68 +1,188 @@
 [
  {
-  "id": "kyu9",
-  "label": "9th Kyu",
-  "file": "assets/tests/kyu9.bin",
-  "iterations": 600000
+  "id": "kyu8",
+  "label": "8th Kyu – Blue Belt",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/kyu8-test.bin"
+   },
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu8-requirements.bin"
+   }
+  ]
  },
  {
-  "id": "kyu8",
-  "label": "8th Kyu",
-  "file": "assets/tests/kyu8.bin",
-  "iterations": 600000
+  "id": "kyu8a",
+  "label": "8a Kyu – Blue Stripe",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu8a-requirements.bin"
+   }
+  ]
  },
  {
   "id": "kyu7",
-  "label": "7th Kyu",
-  "file": "assets/tests/kyu7.bin",
-  "iterations": 600000
+  "label": "7th Kyu – Purple Belt",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/kyu7-test.bin"
+   },
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu7-requirements.bin"
+   }
+  ]
+ },
+ {
+  "id": "kyu7a",
+  "label": "7a Kyu – Purple Stripe",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu7a-requirements.bin"
+   }
+  ]
  },
  {
   "id": "kyu6",
-  "label": "6th Kyu",
-  "file": "assets/tests/kyu6.bin",
-  "iterations": 600000
+  "label": "6th Kyu – Green Belt",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/kyu6-test.bin"
+   },
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu6-requirements.bin"
+   }
+  ]
  },
  {
   "id": "kyu5",
-  "label": "5th Kyu",
-  "file": "assets/tests/kyu5.bin",
-  "iterations": 600000
+  "label": "5th Kyu – Green Stripe",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu5-requirements.bin"
+   }
+  ]
  },
  {
   "id": "kyu4",
-  "label": "4th Kyu",
-  "file": "assets/tests/kyu4.bin",
-  "iterations": 600000
+  "label": "4th Kyu – Red Belt",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/kyu4-test.bin"
+   },
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu4-requirements.bin"
+   }
+  ]
  },
  {
   "id": "kyu3",
-  "label": "3rd Kyu",
-  "file": "assets/tests/kyu3.bin",
-  "iterations": 600000
+  "label": "3rd Kyu – Brown Belt",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/kyu3-test.bin"
+   },
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu3-requirements.bin"
+   }
+  ]
  },
  {
   "id": "kyu2",
-  "label": "2nd Kyu",
-  "file": "assets/tests/kyu2.bin",
-  "iterations": 600000
+  "label": "2nd Kyu – Brown Belt, White Stripe",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu2-requirements.bin"
+   }
+  ]
  },
  {
   "id": "kyu1",
-  "label": "1st Kyu",
-  "file": "assets/tests/kyu1.bin",
-  "iterations": 600000
+  "label": "1st Kyu – Brown Belt, Black Stripe",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/kyu1-requirements.bin"
+   }
+  ]
  },
  {
   "id": "shodan-ho",
   "label": "Shodan-Ho",
-  "file": "assets/tests/shodan-ho.bin",
-  "iterations": 600000
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/shodan-ho-test.bin"
+   }
+  ]
  },
  {
   "id": "shodan",
   "label": "Shodan",
-  "file": "assets/tests/shodan.bin",
-  "iterations": 600000
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/shodan-test.bin"
+   },
+   {
+    "kind": "requirements",
+    "label": "Requirements",
+    "file": "assets/tests/shodan-requirements.bin"
+   }
+  ]
+ },
+ {
+  "id": "kobudo",
+  "label": "Kobudo",
+  "iterations": 600000,
+  "files": [
+   {
+    "kind": "test",
+    "label": "Written Test",
+    "file": "assets/tests/kobudo-test.bin"
+   }
+  ]
  }
 ]
