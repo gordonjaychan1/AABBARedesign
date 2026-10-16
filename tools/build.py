@@ -193,6 +193,10 @@ KATA_YOUTUBE = {
     "Shinsei": "4sPzTIzwS5Q",
 }
 
+# Web3Forms access key that emails online test answers to Sensei (from web3forms.com, tied to her email).
+# Leave empty to turn sending off: students can still fill in the test and download their answers.
+FORM_ACCESS_KEY = ""
+
 # Belt tests locked by tools/encrypt_tests.py (no passwords in here)
 TESTS = json.loads((ROOT / "data" / "tests.json").read_text(encoding="utf-8"))
 
@@ -435,14 +439,15 @@ def build_tests():
     <button class="btn red" type="submit">Open Test</button>
     <p id="test-msg" role="status" aria-live="polite"></p>
   </form>
-  <div id="test-result" class="test-result" hidden>
+  <div id="test-result" class="test-result" data-form-key="{e(FORM_ACCESS_KEY)}" hidden>
     <h3></h3>
     <div class="test-docs"></div>
   </div>
   <p class="note">Stripe ranks have requirements only, with no written test. Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next rank.</p>
 </div></section>""" + free_class()
     return page("tests.html", "Belt Tests", body, "Written belt tests for students of All American Black Belt Academy.",
-                extra_body=f'<script src="js/tests.js?v={ver("js/tests.js")}"></script>')
+                extra_body=f'<script src="js/online-test.js?v={ver("js/online-test.js")}"></script>'
+                           f'<script src="js/tests.js?v={ver("js/tests.js")}"></script>')
 
 
 if __name__ == "__main__":

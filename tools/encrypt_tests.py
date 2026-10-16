@@ -2,9 +2,10 @@
 """Locks each rank's documents (written test, requirements) with that rank's password for the Belt Tests page.
 
 Reads tests-private/belts.json:
-  [{id, label, password, files: [{kind, label, pdf}]}]   (pdf paths are relative to tests-private/)
+  [{id, label, password, files: [{kind, label, pdf | src}]}]   (paths are relative to tests-private/)
+  kind "form" is an online test (src: forms/<id>.json); other kinds are PDFs.
 and writes:
-  assets/tests/<id>-<kind>.bin   encrypted PDF (safe to publish)
+  assets/tests/<id>-<kind>.bin   encrypted PDF or form (safe to publish)
   data/tests.json                ranks and their documents shown on the page (no passwords)
 
 Format of each .bin: b"AABBA1" | salt (16) | iv (16) | HMAC-SHA256 (32) | AES-256-CBC ciphertext.
@@ -56,9 +57,9 @@ if __name__ == "__main__":
         files = []
         for f in r["files"]:
             name = f"{r['id']}-{f['kind']}.bin"
-            (out / name).write_bytes(encrypt((PRIVATE / f["pdf"]).read_bytes(), salt, keys))
+            (out / name).write_bytes(encrypt((PRIVATE / (f.get("src") or f["pdf"])).read_bytes(), salt, keys))
             files.append({"kind": f["kind"], "label": f["label"], "file": f"assets/tests/{name}"})
             count += 1
         manifest.append({"id": r["id"], "label": r["label"], "iterations": ITERATIONS, "files": files})
     (ROOT / "data" / "tests.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False))
-    print(f"locked {count} documents for {len(manifest)} ranks")
+    print(f"locked {count} files for {len(manifest)} ranks")

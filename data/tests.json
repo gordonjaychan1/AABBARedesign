@@ -5,8 +5,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/kyu8-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/kyu8-test.bin"
    },
    {
@@ -34,8 +39,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/kyu7-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/kyu7-test.bin"
    },
    {
@@ -63,8 +73,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/kyu6-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/kyu6-test.bin"
    },
    {
@@ -92,8 +107,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/kyu4-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/kyu4-test.bin"
    },
    {
@@ -109,8 +129,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/kyu3-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/kyu3-test.bin"
    },
    {
@@ -150,8 +175,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/shodan-ho-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/shodan-ho-test.bin"
    }
   ]
@@ -162,8 +192,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/shodan-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/shodan-test.bin"
    },
    {
@@ -179,8 +214,13 @@
   "iterations": 600000,
   "files": [
    {
+    "kind": "form",
+    "label": "Take the Written Test Online",
+    "file": "assets/tests/kobudo-form.bin"
+   },
+   {
     "kind": "test",
-    "label": "Written Test",
+    "label": "Printable Written Test",
     "file": "assets/tests/kobudo-test.bin"
    }
   ]

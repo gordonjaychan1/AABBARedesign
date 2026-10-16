@@ -50,13 +50,18 @@
   }
 
   // One section per document: title, open/download buttons, and the document itself
-  function render() {
+  function render(rankId, rankLabel) {
     list.innerHTML = '';
     docs.forEach(function (d) {
       var sec = document.createElement('section');
       sec.className = 'test-doc';
       var h = document.createElement('h4');
       h.textContent = d.label;
+      if (d.kind === 'form') {
+        sec.append(h, OnlineTest.build(d.form, rankId, rankLabel, result.dataset.formKey || ''));
+        list.appendChild(sec);
+        return;
+      }
       var actions = document.createElement('div');
       actions.className = 'actions';
       var open = document.createElement('a');
@@ -87,15 +92,19 @@
     try {
       var unlocked = [];
       for (var i = 0; i < files.length; i++) {
-        var pdf = await unlock(files[i].file, iterations, pwInput.value);
-        if (!pdf) { say('That password doesn\'t match ' + opt.text + '. Check with Sensei and try again.', true); return; }
-        unlocked.push({ label: files[i].label, url: URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' })),
-                        name: 'AABBA ' + opt.text + ' - ' + files[i].label + '.pdf' });
+        var data = await unlock(files[i].file, iterations, pwInput.value);
+        if (!data) { say('That password doesn\'t match ' + opt.text + '. Check with Sensei and try again.', true); return; }
+        if (files[i].kind === 'form') {
+          unlocked.push({ kind: 'form', label: files[i].label, form: JSON.parse(new TextDecoder().decode(data)) });
+        } else {
+          unlocked.push({ kind: files[i].kind, label: files[i].label, url: URL.createObjectURL(new Blob([data], { type: 'application/pdf' })),
+                          name: 'AABBA ' + opt.text + ' - ' + files[i].label + '.pdf' });
+        }
       }
-      docs.forEach(function (d) { URL.revokeObjectURL(d.url); });
+      docs.forEach(function (d) { if (d.url) URL.revokeObjectURL(d.url); });
       docs = unlocked;
       result.querySelector('h3').textContent = opt.text;
-      render();
+      render(opt.value, opt.text);
       result.hidden = false;
       say('Unlocked!');
       pwInput.value = '';
