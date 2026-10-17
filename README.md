@@ -45,10 +45,9 @@ Each rank on the Belt Tests page has its own password, which unlocks that rank's
 
 Passwords and original PDFs live in `tests-private/`, which is git-ignored. **Never commit that folder.**
 
-1. Convert the Word documents to PDF (macOS):
+1. Convert the Word documents to PDF (macOS). This keeps their question numbers, answer letters and indents:
    ```bash
-   textutil -convert html "Some Doc.docx" -output tests-private/html/kyu8-test.html
-   osascript -l JavaScript tools/html_to_pdf.js tests-private/html/kyu8-test.html tests-private/sources/kyu8-test.pdf
+   python3 tools/docx_to_pdf.py "Some Doc.docx" tests-private/sources/kyu8-test.pdf --fix "typo=>fixed"
    ```
 2. List the ranks in `tests-private/belts.json`:
    `[{"id": "kyu8", "label": "8th Kyu – Blue Belt", "password": "...", "files": [{"kind": "test", "label": "Written Test", "pdf": "sources/kyu8-test.pdf"}, {"kind": "requirements", "label": "Requirements", "pdf": "sources/kyu8-requirements.pdf"}]}]`

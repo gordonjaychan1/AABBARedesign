@@ -5,6 +5,17 @@ var OnlineTest = (function () {
   var ENDPOINT = 'https://api.web3forms.com/submit';
   var LETTERS = 'abcdefghijklmnopqrstuvwxyz';
 
+  // Question labels follow the paper test: a question can cover several paper numbers (n: "1–4"),
+  // and the ones after it continue from there.
+  function labels(test) {
+    var num = 0;
+    return test.questions.map(function (q) {
+      if (q.n) { var m = String(q.n).match(/(\d+)\D*$/); if (m) num = Number(m[1]); return String(q.n); }
+      num += 1;
+      return String(num);
+    });
+  }
+
   function el(tag, attrs, text) {
     var n = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
@@ -91,9 +102,10 @@ var OnlineTest = (function () {
     var a = function (k) { return (v[k] || '').trim() || '(no answer)'; };
     var out = ['AABBA written test: ' + test.title, 'Rank: ' + rankLabel, 'Student: ' + (v.name || '').trim(),
                'Email: ' + ((v.email || '').trim() || '(not given)'), 'Submitted: ' + new Date().toLocaleString(), ''];
+    var nums = labels(test);
     test.questions.forEach(function (q, idx) {
       var n = idx + 1, b = 'q' + n;
-      out.push(n + '. ' + q.prompt);
+      out.push(nums[idx] + '. ' + q.prompt);
       if (q.type === 'short' || q.type === 'long' || q.type === 'choice') out.push('   ' + a(b));
       if (q.type === 'items') q.items.forEach(function (it, i) { out.push('   ' + it + ': ' + a(b + '.' + i)); });
       if (q.type === 'fields') q.fields.forEach(function (f, i) { out.push('   ' + f + ': ' + a(b + '.' + i)); });
@@ -124,9 +136,12 @@ var OnlineTest = (function () {
     form.appendChild(who);
 
     var ol = el('ol', { class: 'ot-questions' });
+    var nums = labels(test);
     test.questions.forEach(function (q, i) {
       var li = el('li');
-      li.append(el('p', { class: 'ot-prompt' }, q.prompt), answerArea(q, i + 1));
+      var prompt = el('p', { class: 'ot-prompt' });
+      prompt.append(el('span', { class: 'ot-num' }, nums[i] + '.'), document.createTextNode(' ' + q.prompt));
+      li.append(prompt, answerArea(q, i + 1));
       ol.appendChild(li);
     });
     form.appendChild(ol);

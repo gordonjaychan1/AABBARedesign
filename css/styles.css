@@ -226,7 +226,8 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .online-test input[type="text"], .online-test input[type="email"], .online-test textarea, .online-test select {
   font: 400 1rem var(--font); padding: 8px 10px; border: 1px solid #999; background: #fff; color: var(--text); width: 100%; min-width: 0; }
 .online-test textarea { resize: vertical; }
-.ot-questions { margin: 20px 0 0; padding-left: 1.6em; }
+.ot-questions { margin: 20px 0 0; padding: 0; list-style: none; }
+.ot-num { font-weight: 700; margin-right: 2px; }
 .ot-questions > li { padding: 14px 0; border-top: 1px solid #ddd; }
 .ot-prompt { margin: 0 0 10px; font-weight: 600; }
 .ot-answer { display: grid; gap: 8px; }
