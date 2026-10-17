@@ -195,7 +195,7 @@ KATA_YOUTUBE = {
 
 # Web3Forms access key that emails online test answers to Sensei (from web3forms.com, tied to her email).
 # Leave empty to turn sending off: students can still fill in the test and download their answers.
-FORM_ACCESS_KEY = ""
+FORM_ACCESS_KEY = "3fb709eb-922b-485b-bc87-f4bbc5de5a08"  # Gordon's Web3Forms account for now; swap for Sensei Laura's key
 
 # Belt tests locked by tools/encrypt_tests.py (no passwords in here)
 TESTS = json.loads((ROOT / "data" / "tests.json").read_text(encoding="utf-8"))
