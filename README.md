@@ -58,6 +58,8 @@ Passwords and original PDFs live in `tests-private/`, which is git-ignored. **Ne
 
 To change a password, edit it in `belts.json` and run step 3 again. Passwords must match exactly, including capitals.
 
+Corrections to the tests' wording (typos etc.) are listed in `tests-private/fixes.json`. After changing that list or getting new Word files, rebuild every PDF with `python3 tools/rebuild_test_pdfs.py` (it reads `~/Desktop/aabbaBeltReqs` by default), then run step 3.
+
 ### Online written tests
 
 Ranks with a written test also get a "Take the Written Test Online" form. Its questions live in `tests-private/forms/<rank>.json` (locked like the PDFs) and are listed in `belts.json` with `"kind": "form"`. Answers are emailed to Sensei through [Web3Forms](https://web3forms.com); set its access key in `FORM_ACCESS_KEY` in `tools/build.py` and rebuild. Until a key is set, students can still fill in the test and download their answers. Answers are saved in the student's browser as they type and cleared after sending.

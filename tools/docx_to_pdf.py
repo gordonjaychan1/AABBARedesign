@@ -92,7 +92,8 @@ def runs(p, fixes, default_size):
     for a, b in fixes:
         for run in out: run["text"] = run["text"].replace(a, b)
         joined = "".join(r["text"] for r in out)
-        if a in joined and out:  # still split across differently formatted pieces: fix it in the first piece
+        # still split across differently formatted pieces? (ignore spots already fixed, e.g. "first" -> "first?")
+        if a in joined.replace(b, "\0") and out:
             out[0]["text"], rest = joined.replace(a, b), out[1:]
             for r in rest: r["text"] = ""
             out = [r for r in out if r["text"]]
