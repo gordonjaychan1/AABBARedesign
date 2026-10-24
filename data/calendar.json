@@ -1,0 +1,238 @@
+[
+ {
+  "date": "2026-09-07",
+  "type": "closed",
+  "title": "Labor Day – Dojo Closed"
+ },
+ {
+  "date": "2026-09-12",
+  "type": "tournament",
+  "title": "Orlando International Karate Open",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2026-09-13",
+  "type": "tournament",
+  "title": "Fiestas South Gate Tournament",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2026-09-19",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
+   ],
+   [
+    "11 AM",
+    "Novice"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
+   ],
+   [
+    "1 PM",
+    "Brown and Black Belt Seminar"
+   ]
+  ]
+ },
+ {
+  "date": "2026-09-26",
+  "type": "tournament",
+  "title": "Las Vegas Open",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2026-10-04",
+  "type": "tournament",
+  "title": "Yuba City Tournament",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2026-10-17",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
+   ],
+   [
+    "11 AM",
+    "Novice"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
+   ]
+  ]
+ },
+ {
+  "date": "2026-10-20",
+  "end": "2026-10-22",
+  "type": "evaluation",
+  "title": "Kumite Evaluations",
+  "note": "Brown + Black Belt Testing"
+ },
+ {
+  "date": "2026-10-25",
+  "type": "tournament",
+  "title": "Hollenbeck Tournament",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2026-11-07",
+  "type": "tournament",
+  "title": "Dixon Tournament",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2026-11-10",
+  "end": "2026-11-11",
+  "type": "evaluation",
+  "title": "Kata Evaluations",
+  "note": "Brown + Black Belt Testing"
+ },
+ {
+  "date": "2026-11-14",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
+   ],
+   [
+    "11 AM",
+    "Novice/Int Testing"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
+   ],
+   [
+    "1 PM",
+    "Brown + Black Belt Testing"
+   ]
+  ]
+ },
+ {
+  "date": "2026-11-26",
+  "end": "2026-11-27",
+  "type": "closed",
+  "title": "Thanksgiving – Dojo Closed"
+ },
+ {
+  "date": "2026-12-05",
+  "type": "tournament",
+  "title": "Plano Tournament",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2026-12-19",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
+   ],
+   [
+    "11 AM",
+    "Novice Testing"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
+   ]
+  ]
+ },
+ {
+  "date": "2026-12-24",
+  "end": "2026-12-25",
+  "type": "closed",
+  "title": "Christmas – Dojo Closed"
+ },
+ {
+  "date": "2026-12-31",
+  "type": "closed",
+  "title": "New Year’s – Dojo Closed"
+ },
+ {
+  "date": "2027-01-01",
+  "type": "closed",
+  "title": "New Year’s Day – Dojo Closed"
+ },
+ {
+  "date": "2027-01-06",
+  "type": "class",
+  "title": "Shugyo Class",
+  "time": "7 PM",
+  "note": "Advanced students only"
+ },
+ {
+  "date": "2027-01-16",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
+   ],
+   [
+    "11 AM",
+    "Novice Testing"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
+   ],
+   [
+    "1 PM",
+    "Black/Brown Belt Seminar"
+   ]
+  ]
+ },
+ {
+  "date": "2027-01-18",
+  "type": "closed",
+  "title": "MLK Day – Dojo Closed"
+ },
+ {
+  "date": "2027-02-07",
+  "type": "tournament",
+  "title": "Yuba City Tournament",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2027-02-15",
+  "type": "closed",
+  "title": "Presidents’ Day – Dojo Closed"
+ },
+ {
+  "date": "2027-02-20",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
+   ],
+   [
+    "11 AM",
+    "Novice Testing"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
+   ],
+   [
+    "1 PM",
+    "Brown and Black Belt Seminar"
+   ]
+  ]
+ }
+]

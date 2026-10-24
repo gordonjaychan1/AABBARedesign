@@ -388,14 +388,89 @@ def build_news():
     return page("news.html", "News & Updates", body, "Tournament results, black belt promotions and training events from AABBA.")
 
 
+# Calendar events (data/calendar.json): date, optional end, type, title, time, note, items [[time, what]]
+EVENTS = json.loads((ROOT / "data" / "calendar.json").read_text(encoding="utf-8"))
+EVENT_TYPES = [("closed", "Dojo closed"), ("testing", "Belt testing"), ("evaluation", "Brown/black belt evaluations"),
+               ("tournament", "Elite team tournament"), ("class", "Special class")]
+
+
 def build_calendar():
-    jump = "".join(f'<a class="chip" href="#m{i}">{n}</a>' for i, (n, m) in enumerate(CALENDAR))
-    tabs = "".join(
-        f'<section class="section" id="m{i}"><div class="wrap narrow"><div class="cal-frame"><img src="{photo(m, 1200, name="cal.png")}" alt="{n} class schedule" loading="{"eager" if i == 0 else "lazy"}"></div></div></section>'
-        for i, (n, m) in enumerate(CALENDAR))
-    body = title_block("Calendar", "Monthly schedules, including holidays and special events.") + \
-        f'<div class="wrap narrow"><div class="filters">{jump}</div></div>' + tabs + free_class()
-    return page("calendar.html", "Calendar", body, "Monthly class calendar for All American Black Belt Academy.")
+    import calendar as cal
+    D = datetime.date
+    for ev in EVENTS:
+        ev["_start"] = D.fromisoformat(ev["date"]); ev["_end"] = D.fromisoformat(ev.get("end", ev["date"]))
+    first = min(ev["_start"] for ev in EVENTS).replace(day=1); last = max(ev["_end"] for ev in EVENTS)
+    months, m = [], first
+    while m <= last:
+        months.append(m)
+        m = (m.replace(day=28) + datetime.timedelta(days=4)).replace(day=1)
+
+    def short(d): return f"{d:%b} {d.day}"
+    def when(ev):
+        a, z = ev["_start"], ev["_end"]
+        if a == z: return f"{a:%a}, {short(a)}"
+        same = a.month == z.month
+        return f"{a:%a}–{z:%a}, {short(a)}–{z.day if same else short(z)}"
+    def times(ev):
+        if ev.get("time"): return ev["time"]
+        if ev.get("items"): return ev["items"][0][0] + ("–" + ev["items"][-1][0] if len(ev["items"]) > 1 else "")
+        return ""
+    def chip(ev):
+        t = times(ev)
+        tspan = f'<span class="t">{e(t)}</span> ' if t else ""
+        return f'<div class="cal-ev {ev["type"]}">{tspan}{e(ev["title"])}</div>'
+
+    out = []
+    for m in months:
+        key = f"{m:%Y-%m}"
+        rows = []
+        for week in cal.Calendar(firstweekday=6).monthdatescalendar(m.year, m.month):
+            cells = []
+            for d in week:
+                evs = [ev for ev in EVENTS if ev["_start"] <= d <= ev["_end"]]
+                cls = ["out"] if d.month != m.month else []
+                if any(ev["type"] == "closed" for ev in evs): cls.append("is-closed")
+                dots = "".join(f'<i class="dot {ev["type"]}"></i>' for ev in evs)
+                body = "".join(chip(ev) for ev in evs) if d.month == m.month else ""
+                dotspan = f'<span class="dots">{dots}</span>' if dots and d.month == m.month else ""
+                cells.append(f'<td class="{" ".join(cls)}" data-date="{d.isoformat()}"><span class="cal-day">{d.day}</span>{dotspan}{body}</td>')
+            rows.append("<tr>" + "".join(cells) + "</tr>")
+        in_month = [ev for ev in EVENTS if ev["_start"] <= cal_month_end(m) and ev["_end"] >= m]
+        items = []
+        for ev in sorted(in_month, key=lambda ev: ev["_start"]):
+            sub = "".join(f"<li><b>{e(t)}</b> {e(w)}</li>" for t, w in ev.get("items", []))
+            tm = " · " + e(ev["time"]) if ev.get("time") else ""
+            note = f'<span class="cal-note">{e(ev["note"])}</span>' if ev.get("note") else ""
+            sublist = f"<ul>{sub}</ul>" if sub else ""
+            items.append(f'<li class="{ev["type"]}"><span class="when">{e(when(ev))}</span>'
+                         f'<span class="what"><b>{e(ev["title"])}</b>{tm}{note}{sublist}</span></li>')
+        listing = f'<ul class="cal-list">{"".join(items)}</ul>' if items else '<p class="note">No special events this month.</p>'
+        head = "".join(f'<th scope="col"><abbr title="{n}">{n[:3]}</abbr></th>' for n in ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+        out.append(f"""<div class="cal-month" id="m-{key}" data-month="{key}" data-label="{m:%B %Y}">
+  <h2 class="cal-month-name">{m:%B %Y}</h2>
+  <table class="cal-grid"><caption class="sr">{m:%B %Y}</caption><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table>
+  <h3 class="cal-list-head">Events in {m:%B}</h3>
+  {listing}
+</div>""")
+    legend = "".join(f'<span class="cal-key {t}"><i class="dot {t}"></i>{e(n)}</span>' for t, n in EVENT_TYPES)
+    lead = 'Holidays, belt testing, tournaments, and special events. Regular class times are on the <a href="classes">Classes page</a>.'
+    body = title_block("Calendar", lead) + f"""
+<section class="section"><div class="wrap">
+  <div class="cal-nav" hidden>
+    <button type="button" class="car-btn cal-prev" aria-label="Previous month">&#8249;</button>
+    <h2 class="cal-title" aria-live="polite"></h2>
+    <button type="button" class="car-btn cal-next" aria-label="Next month">&#8250;</button>
+  </div>
+  <div class="cal-legend">{legend}</div>
+  {"".join(out)}
+</div></section>""" + free_class()
+    return page("calendar.html", "Calendar", body, "Dojo calendar for All American Black Belt Academy: holidays, belt testing, tournaments, and special events.",
+                extra_body=f'<script src="js/calendar.js?v={ver("js/calendar.js")}"></script>')
+
+
+def cal_month_end(m):
+    import calendar as cal
+    return m.replace(day=cal.monthrange(m.year, m.month)[1])
 
 
 def build_gallery():
