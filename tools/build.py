@@ -117,6 +117,39 @@ CLASSES = [
     ("Kumite Class", "Purple Belts and Above", {"Tue": ["5:00 – 5:45 PM"]},
      "4f0023_ff513c1a7a9c4a1798e85ecdbadb8a67~mv2.jpg"),
 ]
+# New schedule from Sensei Laura, starting December 1, 2026 (changes on Wednesdays). Until then the
+# Welcome and Classes pages offer both; from that date the pages show only this one. After it starts,
+# replace CLASSES with this list and remove SCHEDULE_CHANGE.
+SCHEDULE_CHANGE = datetime.date(2026, 12, 1)
+CLASSES_NEW = [
+    ("Kids Beginners", "White to Orange Stripe Belt", {
+        "Mon": ["6:00 – 6:45 PM"], "Tue": ["4:00 – 4:45 PM"], "Wed": ["6:00 – 6:45 PM"],
+        "Thu": ["4:00 – 4:45 PM"], "Fri": ["4:00 – 4:45 PM"]},
+     "4f0023_faed16fd04b049038638d8ab0aa770c6~mv2.jpg"),
+    ("Kids Novice", "Blue to Purple Stripe Belt", {"Mon": ["4:00 – 4:45 PM"], "Wed": ["4:00 – 4:45 PM"]},
+     "4f0023_2f0d375192dd4fae93770bd32607adc7~mv2.jpg"),
+    ("Kids Intermediate", "Green to Red Belt", {"Mon": ["5:00 – 5:45 PM"], "Wed": ["5:00 – 5:45 PM"]},
+     "4f0023_808280f8d2f14b598703bf8bcbbb1ab9~mv2.jpeg"),
+    ("Kids Novice/Intermediate", "Blue to Red Belt", {
+        "Tue": ["6:00 – 6:45 PM"], "Thu": ["5:00 – 5:45 PM"], "Fri": ["5:00 – 5:45 PM"]},
+     "5df506_15eb2b3537f844a7972cf61d4deba43d~mv2_d_6557_2440_s_4_2.jpg"),
+    ("Advanced Class", "Brown and Black Belt", {
+        "Tue": ["7:00 – 8:00 PM"], "Wed": ["7:00 – 8:00 PM"], "Thu": ["7:00 – 8:00 PM"]},
+     "4f0023_1fbca9b442764e30828e1c1630265101~mv2.jpg"),
+    ("All Members Karate", "Blue Belts and Above", {
+        "Mon": ["7:00 – 8:00 PM"], "Fri": ["6:00 – 7:00 PM"]},
+     "4f0023_ebda3d8b7f7f42be9029b20939732cf2~mv2.jpg"),
+    ("Competition Team Practice", "", {"Fri": ["7:00 – 9:00 PM"]},
+     "4f0023_94e399641ccc4382be8ef01aa5e93e7f~mv2.jpg"),
+    ("Weapons Class", "", {"Thu": ["6:00 – 6:45 PM"]},
+     "4f0023_6b0d422afcf1462cac92c5e5ce1ea5cb~mv2.jpg"),
+    ("Kumite Class", "Purple Belts and Above", {"Tue": ["5:00 – 5:45 PM"]},
+     "4f0023_ff513c1a7a9c4a1798e85ecdbadb8a67~mv2.jpg"),
+]
+SATURDAY = "Reserved for Promotions / Seminars / Private Lessons"
+SATURDAY_NEW = "Promotions / Seminars (every 3rd Saturday)"
+SATURDAY_NOTE = "Saturdays are reserved for promotions, seminars, and private lessons."
+SATURDAY_NOTE_NEW = "Promotions and seminars are held every third Saturday, 10:00 AM &ndash; 2:00 PM."
 # Wide photos from the slideshow at the top of the old Classes page, in its order
 SLIDESHOW = [
     "4f0023_40d8149e1c264fbb8a22d32f32ee1a43~mv2.jpeg",
@@ -220,18 +253,30 @@ def ver(path):
     return hashlib.md5((ROOT / path).read_bytes()).hexdigest()[:8]
 
 
-def day_cards():
+def schedule_views(render):
+    """Both schedules with a switch, until SCHEDULE_CHANGE; js/main.js shows only the new one from that date."""
+    if datetime.date.today() >= SCHEDULE_CHANGE:
+        return render(CLASSES_NEW, SATURDAY_NEW, SATURDAY_NOTE_NEW)
+    return f"""<div class="sched-switch" data-sched-switch data-from="{SCHEDULE_CHANGE}">
+  <p class="sched-note">A new class schedule begins <b>December 1, {SCHEDULE_CHANGE.year}</b>, with changes on Wednesdays.</p>
+  <div class="filters" role="group" aria-label="Choose schedule"><button class="chip" data-sched="now" aria-pressed="true">Current Schedule</button><button class="chip" data-sched="new" aria-pressed="false">Starting December 1</button></div>
+</div>
+<div data-sched-view="now">{render(CLASSES, SATURDAY, SATURDAY_NOTE)}</div>
+<div data-sched-view="new" hidden>{render(CLASSES_NEW, SATURDAY_NEW, SATURDAY_NOTE_NEW)}</div>"""
+
+
+def day_cards(classes, saturday, _note=""):
     cards = []
     for a, full in DAYS:
         rows = []
-        for name, belts, sched, _ in CLASSES:
+        for name, belts, sched, _ in classes:
             for t in sched.get(a, []):
                 rows.append((t, name, belts))
         rows.sort(key=lambda r: (int(r[0].split(":")[0]) % 12 + (12 if "PM" in r[0] else 0), r[0]))
         lis = "".join(f"<li><b>{t}</b> {e(n)}{f' <span>({e(b)})</span>' if b else ''}</li>" for t, n, b in rows)
         cards.append(f'<article class="daycard"><h3>{full}</h3><ul>{lis}</ul>'
                      f'<img src="{photo(DAY_PHOTOS[a], 480, 330, a + ".jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
-    cards.append(f'<article class="daycard"><h3>Saturday</h3><ul><li><b>10:00 AM &ndash; 2:00 PM</b> Reserved for Promotions / Seminars / Private Lessons</li></ul>'
+    cards.append(f'<article class="daycard"><h3>Saturday</h3><ul><li><b>10:00 AM &ndash; 2:00 PM</b> {saturday}</li></ul>'
                  f'<img src="{photo(DAY_PHOTOS["Sat"], 480, 330, "Sat.jpg")}" alt="" loading="lazy" width="480" height="330"></article>')
     return '<div class="daygrid">' + "".join(cards) + "</div>"
 
@@ -315,7 +360,7 @@ def build_index():
   </div></div>
 </section>
 {title_block("Classes and Courses", anchor="schedule")}
-<section class="section"><div class="wrap narrow">{day_cards()}
+<section class="section"><div class="wrap narrow">{schedule_views(day_cards)}
   <p class="note">Check the <a href="calendar">monthly calendar</a> for holidays and special events.</p></div></section>
 <section class="section shihan"><div class="wrap narrow">
   <h2>Shihan Hultin &amp; His Dojo</h2>
@@ -335,19 +380,23 @@ def build_instructors():
     return page("instructors.html", "Instructors", body, "Meet the black belt instructors at All American Black Belt Academy.")
 
 
-def build_classes():
+def class_cards(classes, _saturday, sat_note):
     cards = []
-    for name, belts, sched, pic in CLASSES:
+    for name, belts, sched, pic in classes:
         rows = "".join(f'<li><b>{full}</b><span>{"<br>".join(sched[a])}</span></li>' for a, full in DAYS if a in sched)
         sub = f'<p class="belts">{e(belts)}</p>' if belts else ""
         cards.append(f'<article class="daycard classcard"><img src="{photo(pic, 540, 510, "class.jpg")}" alt="" loading="lazy" width="540" height="510">'
                      f'<h3>{e(name)}</h3>{sub}<ul class="times">{rows}</ul></article>')
+    return f'<div class="daygrid">{"".join(cards)}</div><p class="note">{sat_note}</p>'
+
+
+def build_classes():
     n = len(SLIDESHOW)
     slides = "".join(
         f'<div class="slide" role="group" aria-roledescription="slide" aria-label="Photo {i + 1} of {n}">'
         f'<img src="{photo(m, 1800, 720, "slide.jpg")}" alt="" loading="{"eager" if i == 0 else "lazy"}" width="1800" height="720"></div>'
         for i, m in enumerate(SLIDESHOW))
-    body = title_block("Classes and Courses", "Monday through Friday, by belt level. Saturdays are reserved for promotions, seminars, and private lessons.") + f"""
+    body = title_block("Classes and Courses", "Monday through Friday, by belt level.") + f"""
 <section class="section">
   <div class="carousel wide" data-carousel tabindex="0" aria-roledescription="carousel" aria-label="Class photos">
     <div class="track">{slides}</div>
@@ -355,7 +404,7 @@ def build_classes():
     <button class="car-btn next" aria-label="Next photo">&#8250;</button>
   </div>
 </section>
-<section class="section"><div class="wrap"><div class="daygrid">{"".join(cards)}</div>
+<section class="section"><div class="wrap">{schedule_views(class_cards)}
   <p class="note">Check the <a href="calendar">monthly calendar</a> for holidays and special events.</p></div></section>""" + free_class()
     return page("classes.html", "Classes", body, "Class schedule by belt level: kids, advanced, kumite, weapons and competition team.")
 
@@ -374,9 +423,9 @@ def build_news():
             d, c = it["date"], it["category"]
             dt = datetime.date.fromisoformat(d)
             text = "".join(f"<p>{e(t)}</p>" for t in it["text"])
-            pic = (f'<button class="news-photo" data-full="{photo(it["photo"], 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(it["title"])}">'
+            pic = "" if not it.get("photo") else (f'<button class="news-photo" data-full="{photo(it["photo"], 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(it["title"])}">'
                      f'<img src="{photo(it["photo"], 480, 354, "news.jpg")}" alt="" loading="lazy" width="480" height="354"></button>')
-            rows.append(f"""<li class="news-item" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
+            rows.append(f"""<li class="news-item{"" if pic else " no-photo"}" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
 <div class="news-body"><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div>{pic}</li>""")
         groups.append(f'<section class="year-group"><h2>{y}</h2><ul class="news-list">{"".join(rows)}</ul></section>')
     body = title_block("News &amp; Updates", "Tournament results, promotions, and training events.") + f"""
@@ -503,7 +552,7 @@ def build_kata():
 def build_tests():
     options = "".join(f'<option value="{t["id"]}" data-files="{e(json.dumps(t["files"]))}" data-iterations="{t["iterations"]}">{e(t["label"])}</option>'
                       for t in TESTS)
-    body = title_block("Belt Tests", "Students: choose your rank and enter the password Sensei Eric gave you to see your written test and requirements.") + f"""
+    body = title_block("Belt Tests", "Students: choose your rank and enter the password from your Promotion Invitation Slip to see your written test and requirements.") + f"""
 <section class="section"><div class="wrap narrow">
   <form class="test-box" id="test-form" novalidate>
     <label for="belt">Kyu Ranking</label>
@@ -518,7 +567,7 @@ def build_tests():
     <h3></h3>
     <div class="test-docs"></div>
   </div>
-  <p class="note">Stripe ranks have requirements only, with no written test. Don&rsquo;t have a password yet? Ask Sensei Eric when you&rsquo;re ready to test for your next rank.</p>
+  <p class="note">Stripe ranks have requirements only, with no written test. Your password is on your Promotion Invitation Slip, which you&rsquo;ll get when you&rsquo;re invited to test for your next rank.</p>
 </div></section>""" + free_class()
     return page("tests.html", "Belt Tests", body, "Written belt tests for students of All American Black Belt Academy.",
                 extra_body=f'<script src="js/online-test.js?v={ver("js/online-test.js")}"></script>'

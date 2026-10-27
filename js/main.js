@@ -37,6 +37,19 @@
     mark(0);
   });
 
+  // Class schedule: offer the current and upcoming schedules, and show only the new one once it starts
+  var sw = document.querySelector('[data-sched-switch]');
+  if (sw) {
+    var views = document.querySelectorAll('[data-sched-view]');
+    var show = function (which) {
+      views.forEach(function (v) { v.hidden = v.dataset.schedView !== which; });
+      sw.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', c.dataset.sched === which); });
+    };
+    var d = new Date(), today = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    if (today >= sw.dataset.from) { show('new'); sw.remove(); }
+    else sw.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (b) show(b.dataset.sched); });
+  }
+
   // Filters (classes by day, news by category)
   function setupFilter(groupSel, itemSel, attr, apply) {
     var group = document.querySelector(groupSel);
