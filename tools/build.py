@@ -423,8 +423,11 @@ def build_news():
             d, c = it["date"], it["category"]
             dt = datetime.date.fromisoformat(d)
             text = "".join(f"<p>{e(t)}</p>" for t in it["text"])
-            pic = "" if not it.get("photo") else (f'<button class="news-photo" data-full="{photo(it["photo"], 1600, name="full.jpg")}" aria-label="Enlarge photo: {e(it["title"])}">'
-                     f'<img src="{photo(it["photo"], 480, 354, "news.jpg")}" alt="" loading="lazy" width="480" height="354"></button>')
+            pics = it.get("photos") or ([it["photo"]] if it.get("photo") else [])
+            pic = "" if not pics else '<div class="news-photos">' + "".join(
+                f'<button class="news-photo" data-full="{photo(p, 1600, name="full.jpg")}" aria-label="Enlarge photo{f" {i + 1}" if len(pics) > 1 else ""}: {e(it["title"])}">'
+                f'<img src="{photo(p, 480, 354, "news.jpg")}" alt="" loading="lazy" width="480" height="354"></button>'
+                for i, p in enumerate(pics)) + "</div>"
             rows.append(f"""<li class="news-item{"" if pic else " no-photo"}" data-cat="{c}"><time datetime="{d}">{dt:%b} {dt.day}</time>
 <div class="news-body"><h3>{e(it["title"])}</h3><span class="tag {c}">{CAT_LABEL[c]}</span>{text}</div>{pic}</li>""")
         groups.append(f'<section class="year-group"><h2>{y}</h2><ul class="news-list">{"".join(rows)}</ul></section>')

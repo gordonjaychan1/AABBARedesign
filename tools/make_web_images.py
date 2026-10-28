@@ -41,14 +41,20 @@ def resize(src, dest, max_w):
 if __name__ == "__main__":
     originals = pathlib.Path(sys.argv[1])
     out = ROOT / "assets" / "img"
+    media_json = ROOT / "data" / "media.json"
+    # Photos added after the Wix move are keyed by their own file name; keep them and their files
+    added = {k: v for k, v in json.loads(media_json.read_text()).items() if k == v} if media_json.exists() else {}
     if out.exists():
-        shutil.rmtree(out)
+        for f in out.rglob("*"):
+            if f.is_file() and f.name not in added:
+                f.unlink()
     mapping = {}
     for mid, name in mm.photos():
         src = originals / name
         resize(src, out / name, LARGE)
         resize(src, out / "sm" / name, SMALL)
         mapping[mid] = name
-    (ROOT / "data" / "media.json").write_text(json.dumps(mapping, indent=1))
+    mapping.update(added)
+    media_json.write_text(json.dumps(mapping, indent=1))
     total = sum(f.stat().st_size for f in out.rglob("*") if f.is_file())
     print(f"{len(mapping)} photos -> assets/img ({total / 1e6:.1f} MB)")
