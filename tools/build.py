@@ -83,11 +83,12 @@ INSTRUCTORS = [
     ("Instructor", "Johanna Abello", "4f0023_488d0ef656de44bc859e0c3666e0c7d8~mv2.jpg", [
         "3rd Degree Black Belt; 1st Degree Black Belt Weapons",
         "US Open Kata Champion",
+        "USANKF Certified Judge and Coach",
         "NASM Certified Personal Trainer with multiple specializations",
         "Instructor, City of San Ramon Karate Program"]),
     ("Instructor", "Laura Abello", "4f0023_21fd679683184b25b4506c53bb2c43e7~mv2.jpeg", [
         "2nd Degree Black Belt",
-        "Certified USA NKF Judge",
+        "Certified USANKF Judge",
         "Academy Administrator"]),
 ]
 
