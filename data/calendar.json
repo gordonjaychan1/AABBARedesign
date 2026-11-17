@@ -32,12 +32,15 @@
    [
     "12 PM",
     "Intermediate Testing"
-   ],
-   [
-    "1 PM",
-    "Brown and Black Belt Seminar"
    ]
-  ]
+  ],
+  "time": "10 AM – 1 PM"
+ },
+ {
+  "date": "2026-09-19",
+  "type": "class",
+  "title": "Brown and Black Belt Seminar",
+  "time": "1 PM"
  },
  {
   "date": "2026-09-26",
@@ -68,7 +71,8 @@
     "12 PM",
     "Intermediate Testing"
    ]
-  ]
+  ],
+  "time": "10 AM – 1 PM"
  },
  {
   "date": "2026-10-20",
@@ -132,6 +136,12 @@
   "note": "Elite team event"
  },
  {
+  "date": "2026-12-12",
+  "type": "event",
+  "title": "Elite Team Holiday Potluck",
+  "time": "5 – 8:30 PM"
+ },
+ {
   "date": "2026-12-19",
   "type": "testing",
   "title": "Belt Testing",
@@ -148,7 +158,8 @@
     "12 PM",
     "Intermediate Testing"
    ]
-  ]
+  ],
+  "time": "10 AM – 1 PM"
  },
  {
   "date": "2026-12-24",
@@ -174,7 +185,12 @@
   "note": "Advanced students only"
  },
  {
-  "date": "2027-01-16",
+  "date": "2027-01-18",
+  "type": "closed",
+  "title": "MLK Day – Dojo Closed"
+ },
+ {
+  "date": "2027-01-23",
   "type": "testing",
   "title": "Belt Testing",
   "items": [
@@ -189,17 +205,15 @@
    [
     "12 PM",
     "Intermediate Testing"
-   ],
-   [
-    "1 PM",
-    "Black/Brown Belt Seminar"
    ]
-  ]
+  ],
+  "time": "10 AM – 1 PM"
  },
  {
-  "date": "2027-01-18",
-  "type": "closed",
-  "title": "MLK Day – Dojo Closed"
+  "date": "2027-01-23",
+  "type": "class",
+  "title": "Brown and Black Belt Seminar",
+  "time": "1 PM"
  },
  {
   "date": "2027-02-07",
@@ -228,11 +242,102 @@
    [
     "12 PM",
     "Intermediate Testing"
+   ]
+  ],
+  "time": "10 AM – 1 PM"
+ },
+ {
+  "date": "2027-02-20",
+  "type": "class",
+  "title": "Brown and Black Belt Seminar",
+  "time": "1 PM"
+ },
+ {
+  "date": "2027-02-20",
+  "type": "class",
+  "title": "Ukemi Seminar",
+  "time": "3 – 6:15 PM"
+ },
+ {
+  "date": "2027-02-27",
+  "type": "event",
+  "title": "Dojo Tournament",
+  "note": "Fallon Middle School"
+ },
+ {
+  "date": "2027-03-14",
+  "type": "tournament",
+  "title": "Santa Ana Tournament (National Qualifier)",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2027-03-20",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
    ],
    [
-    "1 PM",
-    "Brown and Black Belt Seminar"
+    "11 AM",
+    "Novice Testing"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
    ]
-  ]
+  ],
+  "time": "10 AM – 1 PM"
+ },
+ {
+  "date": "2027-03-20",
+  "type": "class",
+  "title": "Brown and Black Belt Seminar",
+  "time": "1 PM"
+ },
+ {
+  "date": "2027-03-26",
+  "type": "closed",
+  "title": "Good Friday – Dojo Closed"
+ },
+ {
+  "date": "2027-04-10",
+  "type": "testing",
+  "title": "Belt Testing",
+  "items": [
+   [
+    "10 AM",
+    "Beginner Testing"
+   ],
+   [
+    "11 AM",
+    "Novice Testing"
+   ],
+   [
+    "12 PM",
+    "Intermediate Testing"
+   ]
+  ],
+  "time": "10 AM – 1 PM"
+ },
+ {
+  "date": "2027-04-17",
+  "type": "tournament",
+  "title": "Silicon Valley Open Tournament",
+  "note": "Elite team event"
+ },
+ {
+  "date": "2027-04-20",
+  "end": "2027-04-22",
+  "type": "evaluation",
+  "title": "Kumite Evaluations",
+  "note": "Brown + Black Belt Testing"
+ },
+ {
+  "date": "2027-04-25",
+  "type": "tournament",
+  "title": "Rocky Mountain Tournament",
+  "note": "Elite team event"
  }
 ]

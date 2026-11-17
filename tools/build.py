@@ -444,7 +444,7 @@ def build_news():
 # Calendar events (data/calendar.json): date, optional end, type, title, time, note, items [[time, what]]
 EVENTS = json.loads((ROOT / "data" / "calendar.json").read_text(encoding="utf-8"))
 EVENT_TYPES = [("closed", "Dojo closed"), ("testing", "Belt testing"), ("evaluation", "Brown/black belt evaluations"),
-               ("tournament", "Elite team tournament"), ("class", "Special class")]
+               ("tournament", "Elite team tournament"), ("class", "Special class"), ("event", "Dojo event")]
 
 
 def build_calendar():

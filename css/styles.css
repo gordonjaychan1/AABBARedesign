@@ -265,7 +265,7 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .cal-key { display: inline-flex; align-items: center; gap: 6px; }
 .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #888; }
 .dot.closed { background: var(--red); } .dot.testing { background: #c9a227; } .dot.evaluation { background: #6a4c9c; }
-.dot.tournament { background: #2b5797; } .dot.class { background: #2f7d4f; }
+.dot.tournament { background: #2b5797; } .dot.class { background: #2f7d4f; } .dot.event { background: #c4621d; }
 .cal-grid { width: 100%; border-collapse: collapse; table-layout: fixed; background: #fff; box-shadow: 0 1px 6px rgba(0, 0, 0, .18); }
 .cal-grid th { font-weight: 600; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; color: #555; padding: 8px 4px; border-bottom: 2px solid var(--gold); }
 .cal-grid abbr { text-decoration: none; }
@@ -284,11 +284,12 @@ hr.gold { border: 0; height: 2px; background: var(--gold); margin: 0; }
 .cal-ev.evaluation { border-color: #6a4c9c; background: #efe9f7; }
 .cal-ev.tournament { border-color: #2b5797; background: #e6eef9; }
 .cal-ev.class { border-color: #2f7d4f; background: #e5f3ea; }
+.cal-ev.event { border-color: #c4621d; background: #fcebdd; }
 .cal-list-head { font-family: var(--font-day); font-weight: 400; font-size: 1.4rem; color: #333; margin: 26px 0 8px; border-bottom: 2px solid var(--gold); padding-bottom: 6px; }
 .cal-list { list-style: none; padding: 0; margin: 0; }
 .cal-list > li { display: grid; grid-template-columns: 11em 1fr; gap: 14px; padding: 10px 0 10px 12px; border-bottom: 1px solid #ddd; border-left: 4px solid #888; margin-bottom: 6px; }
 .cal-list > li.closed { border-left-color: var(--red); } .cal-list > li.testing { border-left-color: #c9a227; }
-.cal-list > li.evaluation { border-left-color: #6a4c9c; } .cal-list > li.tournament { border-left-color: #2b5797; } .cal-list > li.class { border-left-color: #2f7d4f; }
+.cal-list > li.evaluation { border-left-color: #6a4c9c; } .cal-list > li.tournament { border-left-color: #2b5797; } .cal-list > li.class { border-left-color: #2f7d4f; } .cal-list > li.event { border-left-color: #c4621d; }
 .cal-list .when { font-weight: 600; color: #444; }
 .cal-list .what { display: block; min-width: 0; }
 .cal-list .cal-note { display: block; color: var(--muted); font-size: .95rem; }
